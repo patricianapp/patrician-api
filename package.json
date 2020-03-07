@@ -1,0 +1,29 @@
+{
+  "name": "patrician-api",
+  "version": "1.0.0",
+  "description": "The GraphQL API for interacting with the Patrician database ",
+  "main": "index.js",
+  "dependencies": {
+    "apollo-server": "^2.11.0",
+    "graphql": "^14.6.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.6",
+    "typeorm": "^0.2.24",
+    "typedi": "^0.8.0",
+    "typeorm-typedi-extensions": "^0.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patricianapp/patrician-api.git"
+  },
+  "author": "Elias Jackson",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/patricianapp/patrician-api/issues"
+  },
+  "homepage": "https://github.com/patricianapp/patrician-api#readme"
+}
