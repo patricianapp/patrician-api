@@ -1,9 +1,8 @@
-import { ObjectType, Field, Int } from "../../../src";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
+import { ObjectType, Field, Int } from 'type-graphql';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-import { User } from "./user";
-import { Recipe } from "./recipe";
-import { RelationColumn } from "../helpers";
+import { User } from './user';
+import { Recipe } from './recipe';
 
 @Entity()
 @ObjectType()
@@ -12,13 +11,13 @@ export class Rate {
   readonly id: number;
 
   @Field(type => Int)
-  @Column({ type: "int" })
+  @Column({ type: 'int' })
   value: number;
 
   @Field(type => User)
   @ManyToOne(type => User)
   user: User;
-  @RelationColumn()
+  @Column({ nullable: true })
   userId: number;
 
   @Field()
@@ -27,6 +26,6 @@ export class Rate {
 
   @ManyToOne(type => Recipe)
   recipe: Recipe;
-  @RelationColumn()
+  @Column({ nullable: true })
   recipeId: number;
 }

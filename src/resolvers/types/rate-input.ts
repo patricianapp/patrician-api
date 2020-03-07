@@ -1,4 +1,4 @@
-import { InputType, Field, Int, ID } from "type-graphql";
+import { InputType, Field, Int, ID } from 'type-graphql';
 
 @InputType()
 export class RateInput {

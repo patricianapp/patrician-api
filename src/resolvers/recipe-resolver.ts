@@ -1,24 +1,24 @@
-import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx, Int } from "type-graphql";
-import { Repository } from "typeorm";
-import { InjectRepository } from "typeorm-typedi-extensions";
+import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx, Int } from 'type-graphql';
+import { Repository } from 'typeorm';
+import { InjectRepository } from 'typeorm-typedi-extensions';
 
-import { Recipe } from "../entities/recipe";
-import { Rate } from "../entities/rate";
-import { User } from "../entities/user";
-import { RecipeInput } from "./types/recipe-input";
-import { Context } from "../index";
-import { RateInput } from "./types/rate-input";
+import { Recipe } from '../entities/recipe';
+import { Rate } from '../entities/rate';
+import { User } from '../entities/user';
+import { RecipeInput } from './types/recipe-input';
+import { Context } from '../index';
+import { RateInput } from './types/rate-input';
 
 @Resolver(of => Recipe)
 export class RecipeResolver {
   constructor(
     @InjectRepository(Recipe) private readonly recipeRepository: Repository<Recipe>,
     @InjectRepository(Rate) private readonly ratingsRepository: Repository<Rate>,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
   @Query(returns => Recipe, { nullable: true })
-  recipe(@Arg("recipeId", type => Int) recipeId: number) {
+  recipe(@Arg('recipeId', type => Int) recipeId: number) {
     return this.recipeRepository.findOne(recipeId);
   }
 
@@ -28,10 +28,7 @@ export class RecipeResolver {
   }
 
   @Mutation(returns => Recipe)
-  async addRecipe(
-    @Arg("recipe") recipeInput: RecipeInput,
-    @Ctx() { user }: Context,
-  ): Promise<Recipe> {
+  async addRecipe(@Arg('recipe') recipeInput: RecipeInput, @Ctx() { user }: Context): Promise<Recipe> {
     const recipe = this.recipeRepository.create({
       ...recipeInput,
       authorId: user.id,
@@ -40,13 +37,13 @@ export class RecipeResolver {
   }
 
   @Mutation(returns => Recipe)
-  async rate(@Arg("rate") rateInput: RateInput, @Ctx() { user }: Context): Promise<Recipe> {
+  async rate(@Arg('rate') rateInput: RateInput, @Ctx() { user }: Context): Promise<Recipe> {
     // find the recipe
     const recipe = await this.recipeRepository.findOne(rateInput.recipeId, {
-      relations: ["ratings"],
+      relations: ['ratings'],
     });
     if (!recipe) {
-      throw new Error("Invalid recipe ID");
+      throw new Error('Invalid recipe ID');
     }
 
     // set the new recipe rate
