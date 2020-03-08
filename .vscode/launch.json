@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Docker: Attach to Node",
+          "type": "node",
+          "request": "attach",
+          "port": 9229,
+          "address": "localhost",
+          "localRoot": "${workspaceFolder}/src",
+          "remoteRoot": "/opt/app",
+          "protocol": "inspector",
+          "restart": true
+      },
+      {
+          "name": "Attach to Node",
+          "type": "node",
+          "request": "attach",
+          "port": 9229,
+          "address": "localhost",
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "${workspaceFolder}",
+          "protocol": "inspector",
+          "restart": true
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch",
+        "args": ["${workspaceFolder}/src/index.ts"],
+        "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+        "cwd": "${workspaceRoot}",
+        "protocol": "inspector",
+    }
+  ]
+}

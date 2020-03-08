@@ -31,5 +31,5 @@ export class Recipe {
   @ManyToOne(type => User)
   author: User;
   @Column({ nullable: true })
-  authorId: number;
+  authorId: string;
 }

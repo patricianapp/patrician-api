@@ -8,8 +8,6 @@ import { typeOrmConfig } from './config';
 
 import { RecipeResolver } from './resolvers/recipe-resolver';
 import { RateResolver } from './resolvers/rate-resolver';
-import { Recipe } from './entities/recipe';
-import { Rate } from './entities/rate';
 import { User } from './entities/user';
 
 export interface Context {
@@ -26,7 +24,7 @@ async function bootstrap() {
 
     // build TypeGraphQL executable schema
     const schema = await TypeGraphQL.buildSchema({
-      resolvers: [RecipeResolver, RateResolver],
+      resolvers: [__dirname + '/resolvers/*.ts'],
       container: Container,
     });
 

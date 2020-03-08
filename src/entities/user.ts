@@ -1,21 +1,33 @@
-import { Field, ID, ObjectType } from 'type-graphql';
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { Field, ObjectType } from 'type-graphql';
+import { Column, Entity, BaseEntity, Unique, OneToMany, PrimaryColumn  } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { CollectionItem } from './useralbum';
 
 @ObjectType()
 @Entity()
-export class User {
-  @Field(type => ID)
-  @PrimaryGeneratedColumn()
-  readonly id: number;
-
+@Unique(['username'])
+export class User extends BaseEntity {
   @Field()
-  @Column()
-  email: string;
+  @PrimaryColumn()
+  username: string;
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  nickname?: string;
+  @Field({nullable: true})
+  @Column({nullable: true})
+  email: string;
 
   @Column()
   password: string;
+
+  @Column()
+  salt: string;
+
+  @Field(type => [CollectionItem])
+  @OneToMany(type => CollectionItem, userAlbum => userAlbum.user)
+  collection: CollectionItem[];
+
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt);
+    return hash === this.password;
+  }
+
 }

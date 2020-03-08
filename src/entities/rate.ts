@@ -26,6 +26,7 @@ export class Rate {
 
   @ManyToOne(type => Recipe)
   recipe: Recipe;
+
   @Column({ nullable: true })
   recipeId: number;
 }

@@ -31,7 +31,7 @@ export class RecipeResolver {
   async addRecipe(@Arg('recipe') recipeInput: RecipeInput, @Ctx() { user }: Context): Promise<Recipe> {
     const recipe = this.recipeRepository.create({
       ...recipeInput,
-      authorId: user.id,
+      authorId: 'bob',
     });
     return await this.recipeRepository.save(recipe);
   }
