@@ -4,6 +4,10 @@
     "module": "commonjs",
     "lib": ["es2016", "esnext.asynciterable"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
-  }
+    "emitDecoratorMetadata": true,
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
