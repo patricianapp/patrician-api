@@ -16,4 +16,5 @@ export const typeOrmConfig: ConnectionOptions = {
   logger: 'advanced-console',
   logging: 'all',
   cache: true,
+  dropSchema: true,
 };

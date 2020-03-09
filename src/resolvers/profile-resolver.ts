@@ -1,19 +1,22 @@
 import { Resolver, Query, FieldResolver, Arg, Root, Mutation, Ctx, Int } from 'type-graphql';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { UserRepository } from './repositorities/user';
+import { ItemRepository } from './repositorities/item';
 import { Container } from 'typedi';
-import { CollectionItem } from '../entities/useralbum';
+import { CollectionItem } from '../entities/collection-item';
 import { AuthCredentialsInput } from './types/auth-input';
 import { AddItemInput } from './types/item-input';
 import { Repository } from 'typeorm';
+import { Item } from '../entities/item';
 
 @Resolver()
 export class ProfileResolver {
   constructor(
     @InjectRepository() private readonly userRepository: UserRepository,
-    @InjectRepository() private readonly collectionRepository: Repository<CollectionItem>
+    @InjectRepository(CollectionItem) private readonly collectionRepository: Repository<CollectionItem>,
+    @InjectRepository() private readonly itemRepository: ItemRepository
   ) {
-    Container.set('currentUser', 'user1');
+
   }
 
   // @Query(returns => Recipe, { nullable: true })
@@ -21,10 +24,22 @@ export class ProfileResolver {
   //   return this.userRepository.findOne(recipeId);
   // }
 
+  // creates a test user. run this if database has been reset
+  @Query(returns => String)
+  async debugInit(): Promise<string> {
+    let currentUser = await this.userRepository.signUp({
+      username: 'user1',
+      password: 'TestPa$$word123'
+    });
+
+
+    return 'all set';
+  }
+
   @Query(returns => [CollectionItem])
   async collection(): Promise<CollectionItem[]> {
     let user = await this.userRepository.findOne(Container.get('currentUser'), {
-      relations: ['collection']
+      relations: ['collection', 'collection.itemDetails']
     });
     if(!user) {
       throw new Error('User not found');
@@ -34,19 +49,18 @@ export class ProfileResolver {
 
   @Mutation(returns => String)
   async signUp(@Arg('credentials') authCredentials: AuthCredentialsInput): Promise<string> {
-    const user = this.userRepository.create({
-      ...authCredentials,
-    });
     return await this.userRepository.signUp(authCredentials);
   }
 
-  // @Mutation(returns => CollectionItem)
-  // async addItem(@Arg('item') item: AddItemInput): Promise<string> {
-  //   const recipe = this.collectionRepository.create({
-  //     ...item,
-  //   });
-  //   return await this.userRepository.signUp(authCredentials);
-  // }
+  @Mutation(returns => CollectionItem)
+  async addItem(@Arg('item') itemInput: AddItemInput): Promise<CollectionItem> {
+    const item = await this.itemRepository.initItem(itemInput)
+    let user = await this.userRepository.findOne(Container.get('currentUser'));
+    const userItem = new CollectionItem();
+    userItem.itemDetails = item as Item;
+    userItem.user = user;
+    return await this.collectionRepository.save(userItem);
+  }
 
   // @Mutation(returns => Recipe)
   // async rate(@Arg('rate') rateInput: RateInput, @Ctx() { user }: Context): Promise<Recipe> {

@@ -1,25 +1,25 @@
 import { Field, ObjectType, Int } from 'type-graphql';
 import { BaseEntity, Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
-import { CollectionItem } from './useralbum';
+import { CollectionItem } from './collection-item';
 
 @ObjectType()
 @Entity()
-export class Album extends BaseEntity {
+export class Item extends BaseEntity {
   @Field()
   @PrimaryColumn()
   mbid: string;
 
   @Field(type => Int)
-  @Column({ type: 'int' })
-  rymId: number;
+  @Column({ type: 'int', nullable: true })
+  rymId?: number;
 
   @Field()
   @Column()
-  title: string;
+  name: string;
 
   @Field()
   @Column({nullable: true})
-  disambiguation: string;
+  disambiguation?: string;
 
   // @OneToMany(type => ReleaseGroupAlias)
   // aliases: string[];
@@ -28,7 +28,7 @@ export class Album extends BaseEntity {
   @Column()
   artist: string;
 
-  @OneToMany(type => CollectionItem, userAlbum => userAlbum.albumDetails)
+  @OneToMany(type => CollectionItem, collectionItem => collectionItem.itemDetails)
   userAlbums: CollectionItem[];
 
 }

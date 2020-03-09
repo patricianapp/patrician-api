@@ -5,10 +5,6 @@ import { IsNotEmpty } from 'class-validator';
 export class AddItemInput {
   @Field()
   @IsNotEmpty()
-  userId: string;
-
-  @Field()
-  @IsNotEmpty()
   artist: string;
 
   @Field()
@@ -18,7 +14,7 @@ export class AddItemInput {
   @Field()
   mbid: string;
 
-  @Field()
+  @Field({ nullable: true })
   rating: string;
 
   // TODO: Add year, mbid, etc as optionals

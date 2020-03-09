@@ -1,7 +1,7 @@
 {
   "name": "patrician-api",
   "version": "1.0.0",
-  "description": "The GraphQL API for interacting with the Patrician database ",
+  "description": "The GraphQL API for interacting with the Patrician database",
   "main": "index.js",
   "dependencies": {
     "apollo-server": "^2.11.0",

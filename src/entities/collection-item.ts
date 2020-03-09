@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from './user';
-import { Album } from './album';
+import { Item } from './item';
 
 @ObjectType()
 @Entity()
@@ -25,9 +25,9 @@ export class CollectionItem extends BaseEntity {
   @ManyToOne(type => User, user => user.collection)
   user: User;
 
-  @Field(type => Album)
-  @ManyToOne(type => Album, album => album.userAlbums)
-  albumDetails: Album;
+  @Field(type => Item)
+  @ManyToOne(type => Item, item => item.userAlbums)
+  itemDetails: Item;
 
   @Field()
   @CreateDateColumn()
@@ -39,16 +39,16 @@ export class CollectionItem extends BaseEntity {
 
   @Field()
   get artist(): string {
-    return this.albumDetails.artist;
+    return this.itemDetails.artist;
   }
 
   @Field()
   get albumName(): string {
-    return this.albumDetails.title;
+    return this.itemDetails.name;
   }
 
   @Field()
   get mbid(): string {
-    return this.albumDetails.mbid;
+    return this.itemDetails.mbid;
   }
 }

@@ -9,6 +9,8 @@ import { typeOrmConfig } from './config';
 import { RecipeResolver } from './resolvers/recipe-resolver';
 import { RateResolver } from './resolvers/rate-resolver';
 import { User } from './entities/user';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export interface Context {
   user: User;
@@ -16,6 +18,8 @@ export interface Context {
 
 // register 3rd party IOC container
 TypeORM.useContainer(Container);
+
+Container.set('currentUser', 'user1');
 
 async function bootstrap() {
   try {
@@ -32,7 +36,7 @@ async function bootstrap() {
     const server = new ApolloServer({ schema });
 
     // Start the server
-    const { url } = await server.listen(4000);
+    const { url } = await server.listen(process.env.PORT);
     console.log(`Server is running, GraphQL Playground available at ${url}`);
   } catch (err) {
     console.error(err);

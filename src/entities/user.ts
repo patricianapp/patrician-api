@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 import { Column, Entity, BaseEntity, Unique, OneToMany, PrimaryColumn  } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { CollectionItem } from './useralbum';
+import { CollectionItem } from './collection-item';
 
 @ObjectType()
 @Entity()
@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   salt: string;
 
   @Field(type => [CollectionItem])
-  @OneToMany(type => CollectionItem, userAlbum => userAlbum.user)
+  @OneToMany(type => CollectionItem, collectionItem => collectionItem.user)
   collection: CollectionItem[];
 
   async validatePassword(password: string): Promise<boolean> {
