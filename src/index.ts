@@ -1,3 +1,4 @@
+import * as path from 'path';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server';
 import { Container } from 'typedi';
@@ -30,6 +31,7 @@ async function bootstrap() {
     const schema = await TypeGraphQL.buildSchema({
       resolvers: [__dirname + '/resolvers/*.ts'],
       container: Container,
+      emitSchemaFile: true,
     });
 
     // Create GraphQL server
