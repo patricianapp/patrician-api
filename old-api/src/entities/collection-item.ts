@@ -26,7 +26,7 @@ export class CollectionItem extends BaseEntity {
   user: User;
 
   @Field(type => Item)
-  @ManyToOne(type => Item, item => item.userAlbums)
+  @ManyToOne(type => Item, item => item.userAlbums, {eager: true})
   itemDetails: Item;
 
   @Field()

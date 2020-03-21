@@ -23,7 +23,7 @@ export class UserResolver {
   @Query(returns => User)
   getUser(@Arg('username') username: string) {
     return this.userRepository.findOne(username, {
-      relations: ['collection', 'collection.itemDetails']
+      relations: ['collection', 'collection.itemDetails'] // I think if we use an "eager" relation, we won't need to do this
     });
   }
 
