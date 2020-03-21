@@ -40,6 +40,7 @@
     "test:watch": "npx jest --watch --group=unit",
     "test:integration:watch": "npx jest --watch --group=integration",
     "start": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
+    "start:nodebug": "nodemon src/index.ts",
     "compile": "tsc -p .",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write --loglevel error \"src/**/*.ts\"",

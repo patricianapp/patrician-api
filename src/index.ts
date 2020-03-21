@@ -35,7 +35,7 @@ async function bootstrap() {
     });
 
     // Create GraphQL server
-    const server = new ApolloServer({ schema });
+    const server = new ApolloServer({ schema, cors: false });
 
     // Start the server
     const { url } = await server.listen(process.env.PORT);

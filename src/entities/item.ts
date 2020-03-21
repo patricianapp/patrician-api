@@ -1,5 +1,5 @@
 import { Field, ObjectType, Int } from 'type-graphql';
-import { BaseEntity, Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryColumn, Column, OneToMany, EventSubscriber, EntitySubscriberInterface, InsertEvent } from 'typeorm';
 import { CollectionItem } from './collection-item';
 
 @ObjectType()
@@ -14,6 +14,10 @@ export class Item extends BaseEntity {
   rymId?: number;
 
   @Field()
+  @Column({ nullable: true })
+  spotifyId?: number;
+
+  @Field()
   @Column()
   name: string;
 
@@ -24,6 +28,9 @@ export class Item extends BaseEntity {
   // @OneToMany(type => ReleaseGroupAlias)
   // aliases: string[];
 
+  @Column()
+  
+
   @Field()
   @Column()
   artist: string;
@@ -31,4 +38,15 @@ export class Item extends BaseEntity {
   @OneToMany(type => CollectionItem, collectionItem => collectionItem.itemDetails)
   userAlbums: CollectionItem[];
 
+}
+
+@EventSubscriber()
+export class ItemSubscriber implements EntitySubscriberInterface<Item> {
+  listenTo () { 
+    return Item;
+  }
+
+  afterInsert(event: InsertEvent<Item>) {
+    
+  }
 }
