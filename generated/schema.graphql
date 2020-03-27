@@ -55,6 +55,96 @@ input BaseWhereInput {
   deletedById_eq: String
 }
 
+type CollectionItem implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  customTitle: String
+  customArtist: String
+  user: User
+  userId: String!
+  itemDetails: Item
+  itemDetailsId: String!
+}
+
+input CollectionItemCreateInput {
+  customTitle: String
+  customArtist: String
+  userId: ID!
+  itemDetailsId: ID!
+}
+
+enum CollectionItemOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  customTitle_ASC
+  customTitle_DESC
+  customArtist_ASC
+  customArtist_DESC
+  userId_ASC
+  userId_DESC
+  itemDetailsId_ASC
+  itemDetailsId_DESC
+}
+
+input CollectionItemUpdateInput {
+  customTitle: String
+  customArtist: String
+  userId: ID
+  itemDetailsId: ID
+}
+
+input CollectionItemWhereInput {
+  id_eq: String
+  id_in: [String!]
+  createdAt_eq: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  createdById_eq: String
+  updatedAt_eq: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  updatedById_eq: String
+  deletedAt_all: Boolean
+  deletedAt_eq: String
+  deletedAt_lt: String
+  deletedAt_lte: String
+  deletedAt_gt: String
+  deletedAt_gte: String
+  deletedById_eq: String
+  customTitle_eq: String
+  customTitle_contains: String
+  customTitle_startsWith: String
+  customTitle_endsWith: String
+  customTitle_in: [String!]
+  customArtist_eq: String
+  customArtist_contains: String
+  customArtist_startsWith: String
+  customArtist_endsWith: String
+  customArtist_in: [String!]
+  userId_eq: ID
+  userId_in: [ID!]
+  itemDetailsId_eq: ID
+  itemDetailsId_in: [ID!]
+}
+
+input CollectionItemWhereUniqueInput {
+  id: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -64,7 +154,128 @@ interface DeleteResponse {
   id: ID!
 }
 
+type Item implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  mbid: String
+  rymId: Int
+  spotifyId: String
+  title: String
+  disambiguation: String
+  artist: String
+  collectionItem: [CollectionItem!]
+}
+
+input ItemCreateInput {
+  mbid: String
+  rymId: Float
+  spotifyId: ID
+  title: String
+  disambiguation: String
+  artist: String
+}
+
+enum ItemOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  mbid_ASC
+  mbid_DESC
+  rymId_ASC
+  rymId_DESC
+  spotifyId_ASC
+  spotifyId_DESC
+  title_ASC
+  title_DESC
+  disambiguation_ASC
+  disambiguation_DESC
+  artist_ASC
+  artist_DESC
+}
+
+input ItemUpdateInput {
+  mbid: String
+  rymId: Float
+  spotifyId: ID
+  title: String
+  disambiguation: String
+  artist: String
+}
+
+input ItemWhereInput {
+  id_eq: String
+  id_in: [String!]
+  createdAt_eq: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  createdById_eq: String
+  updatedAt_eq: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  updatedById_eq: String
+  deletedAt_all: Boolean
+  deletedAt_eq: String
+  deletedAt_lt: String
+  deletedAt_lte: String
+  deletedAt_gt: String
+  deletedAt_gte: String
+  deletedById_eq: String
+  mbid_eq: String
+  mbid_contains: String
+  mbid_startsWith: String
+  mbid_endsWith: String
+  mbid_in: [String!]
+  rymId_eq: Int
+  rymId_gt: Int
+  rymId_gte: Int
+  rymId_lt: Int
+  rymId_lte: Int
+  rymId_in: [Int!]
+  spotifyId_eq: ID
+  spotifyId_in: [ID!]
+  title_eq: String
+  title_contains: String
+  title_startsWith: String
+  title_endsWith: String
+  title_in: [String!]
+  disambiguation_eq: String
+  disambiguation_contains: String
+  disambiguation_startsWith: String
+  disambiguation_endsWith: String
+  disambiguation_in: [String!]
+  artist_eq: String
+  artist_contains: String
+  artist_startsWith: String
+  artist_endsWith: String
+  artist_in: [String!]
+}
+
+input ItemWhereUniqueInput {
+  id: String!
+}
+
 type Mutation {
+  createCollectionItem(data: CollectionItemCreateInput!): CollectionItem!
+  createManyCollectionItems(data: [CollectionItemCreateInput!]!): [CollectionItem!]!
+  updateCollectionItem(data: CollectionItemUpdateInput!, where: CollectionItemWhereUniqueInput!): CollectionItem!
+  deleteCollectionItem(where: CollectionItemWhereUniqueInput!): StandardDeleteResponse!
+  createItem(data: ItemCreateInput!): Item!
+  createManyItems(data: [ItemCreateInput!]!): [Item!]!
+  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item!
+  deleteItem(where: ItemWhereUniqueInput!): StandardDeleteResponse!
   createUser(data: UserCreateInput!): User!
   createManyUsers(data: [UserCreateInput!]!): [User!]!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
@@ -72,6 +283,10 @@ type Mutation {
 }
 
 type Query {
+  collectionItems(offset: Int, limit: Int = 50, where: CollectionItemWhereInput, orderBy: CollectionItemOrderByInput): [CollectionItem!]!
+  collectionItem(where: CollectionItemWhereUniqueInput!): CollectionItem!
+  items(offset: Int, limit: Int = 50, where: ItemWhereInput, orderBy: ItemOrderByInput): [Item!]!
+  item(where: ItemWhereUniqueInput!): Item!
   users(offset: Int, limit: Int = 50, where: UserWhereInput, orderBy: UserOrderByInput): [User!]!
   user(where: UserWhereUniqueInput!): User!
 }
@@ -91,11 +306,14 @@ type User implements BaseGraphQLObject {
   version: Int!
   username: String!
   email: String
+  bio: String
+  collection: [CollectionItem!]
 }
 
 input UserCreateInput {
   username: String!
   email: String
+  bio: String
 }
 
 enum UserOrderByInput {
@@ -109,11 +327,14 @@ enum UserOrderByInput {
   username_DESC
   email_ASC
   email_DESC
+  bio_ASC
+  bio_DESC
 }
 
 input UserUpdateInput {
   username: String
   email: String
+  bio: String
 }
 
 input UserWhereInput {
@@ -148,6 +369,11 @@ input UserWhereInput {
   email_startsWith: String
   email_endsWith: String
   email_in: [String!]
+  bio_eq: String
+  bio_contains: String
+  bio_startsWith: String
+  bio_endsWith: String
+  bio_in: [String!]
 }
 
 input UserWhereUniqueInput {

@@ -23,6 +23,10 @@ const { GraphQLJSONObject } = require("graphql-type-json");
 import { BaseWhereInput, JsonObject, PaginationArgs } from "warthog";
 // @ts-ignore
 import { User } from "../src/modules/user/user.model";
+// @ts-ignore
+import { Item } from "../src/modules/item/item.model";
+// @ts-ignore
+import { CollectionItem } from "../src/modules/collection-item/collection-item.model";
 
 export enum UserOrderByEnum {
   createdAt_ASC = "createdAt_ASC",
@@ -38,7 +42,10 @@ export enum UserOrderByEnum {
   username_DESC = "username_DESC",
 
   email_ASC = "email_ASC",
-  email_DESC = "email_DESC"
+  email_DESC = "email_DESC",
+
+  bio_ASC = "bio_ASC",
+  bio_DESC = "bio_DESC"
 }
 
 registerEnumType(UserOrderByEnum, {
@@ -139,6 +146,21 @@ export class UserWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   email_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  bio_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  bio_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  bio_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  bio_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  bio_in?: string[];
 }
 
 @TypeGraphQLInputType()
@@ -154,6 +176,9 @@ export class UserCreateInput {
 
   @TypeGraphQLField({ nullable: true })
   email?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  bio?: string;
 }
 
 @TypeGraphQLInputType()
@@ -163,6 +188,9 @@ export class UserUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   email?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  bio?: string;
 }
 
 @ArgsType()
@@ -184,4 +212,448 @@ export class UserCreateManyArgs {
 export class UserUpdateArgs {
   @TypeGraphQLField() data!: UserUpdateInput;
   @TypeGraphQLField() where!: UserWhereUniqueInput;
+}
+
+export enum ItemOrderByEnum {
+  createdAt_ASC = "createdAt_ASC",
+  createdAt_DESC = "createdAt_DESC",
+
+  updatedAt_ASC = "updatedAt_ASC",
+  updatedAt_DESC = "updatedAt_DESC",
+
+  deletedAt_ASC = "deletedAt_ASC",
+  deletedAt_DESC = "deletedAt_DESC",
+
+  mbid_ASC = "mbid_ASC",
+  mbid_DESC = "mbid_DESC",
+
+  rymId_ASC = "rymId_ASC",
+  rymId_DESC = "rymId_DESC",
+
+  spotifyId_ASC = "spotifyId_ASC",
+  spotifyId_DESC = "spotifyId_DESC",
+
+  title_ASC = "title_ASC",
+  title_DESC = "title_DESC",
+
+  disambiguation_ASC = "disambiguation_ASC",
+  disambiguation_DESC = "disambiguation_DESC",
+
+  artist_ASC = "artist_ASC",
+  artist_DESC = "artist_DESC"
+}
+
+registerEnumType(ItemOrderByEnum, {
+  name: "ItemOrderByInput"
+});
+
+@TypeGraphQLInputType()
+export class ItemWhereInput {
+  @TypeGraphQLField(() => String, { nullable: true })
+  id_eq?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  id_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  createdById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  updatedById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_all?: Boolean;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  deletedById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  mbid_in?: string[];
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  rymId_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  rymId_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  rymId_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  rymId_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  rymId_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  rymId_in?: number[];
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  spotifyId_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  spotifyId_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  title_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  title_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  disambiguation_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  artist_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  artist_in?: string[];
+}
+
+@TypeGraphQLInputType()
+export class ItemWhereUniqueInput {
+  @TypeGraphQLField(() => String)
+  id?: string;
+}
+
+@TypeGraphQLInputType()
+export class ItemCreateInput {
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rymId?: number;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  spotifyId?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist?: string;
+}
+
+@TypeGraphQLInputType()
+export class ItemUpdateInput {
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rymId?: number;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  spotifyId?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  disambiguation?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist?: string;
+}
+
+@ArgsType()
+export class ItemWhereArgs extends PaginationArgs {
+  @TypeGraphQLField(() => ItemWhereInput, { nullable: true })
+  where?: ItemWhereInput;
+
+  @TypeGraphQLField(() => ItemOrderByEnum, { nullable: true })
+  orderBy?: ItemOrderByEnum;
+}
+
+@ArgsType()
+export class ItemCreateManyArgs {
+  @TypeGraphQLField(() => [ItemCreateInput])
+  data!: ItemCreateInput[];
+}
+
+@ArgsType()
+export class ItemUpdateArgs {
+  @TypeGraphQLField() data!: ItemUpdateInput;
+  @TypeGraphQLField() where!: ItemWhereUniqueInput;
+}
+
+export enum CollectionItemOrderByEnum {
+  createdAt_ASC = "createdAt_ASC",
+  createdAt_DESC = "createdAt_DESC",
+
+  updatedAt_ASC = "updatedAt_ASC",
+  updatedAt_DESC = "updatedAt_DESC",
+
+  deletedAt_ASC = "deletedAt_ASC",
+  deletedAt_DESC = "deletedAt_DESC",
+
+  customTitle_ASC = "customTitle_ASC",
+  customTitle_DESC = "customTitle_DESC",
+
+  customArtist_ASC = "customArtist_ASC",
+  customArtist_DESC = "customArtist_DESC",
+
+  userId_ASC = "userId_ASC",
+  userId_DESC = "userId_DESC",
+
+  itemDetailsId_ASC = "itemDetailsId_ASC",
+  itemDetailsId_DESC = "itemDetailsId_DESC"
+}
+
+registerEnumType(CollectionItemOrderByEnum, {
+  name: "CollectionItemOrderByInput"
+});
+
+@TypeGraphQLInputType()
+export class CollectionItemWhereInput {
+  @TypeGraphQLField(() => String, { nullable: true })
+  id_eq?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  id_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  createdById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  updatedById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_all?: Boolean;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_eq?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lte?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gt?: String;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gte?: String;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  deletedById_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customTitle_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customTitle_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customTitle_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customTitle_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  customTitle_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  customArtist_in?: string[];
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  userId_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  userId_in?: string[];
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  itemDetailsId_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  itemDetailsId_in?: string[];
+}
+
+@TypeGraphQLInputType()
+export class CollectionItemWhereUniqueInput {
+  @TypeGraphQLField(() => String)
+  id?: string;
+}
+
+@TypeGraphQLInputType()
+export class CollectionItemCreateInput {
+  @TypeGraphQLField({ nullable: true })
+  customTitle?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist?: string;
+
+  @TypeGraphQLField(() => ID)
+  userId!: string;
+
+  @TypeGraphQLField(() => ID)
+  itemDetailsId!: string;
+}
+
+@TypeGraphQLInputType()
+export class CollectionItemUpdateInput {
+  @TypeGraphQLField({ nullable: true })
+  customTitle?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  customArtist?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  userId?: string;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  itemDetailsId?: string;
+}
+
+@ArgsType()
+export class CollectionItemWhereArgs extends PaginationArgs {
+  @TypeGraphQLField(() => CollectionItemWhereInput, { nullable: true })
+  where?: CollectionItemWhereInput;
+
+  @TypeGraphQLField(() => CollectionItemOrderByEnum, { nullable: true })
+  orderBy?: CollectionItemOrderByEnum;
+}
+
+@ArgsType()
+export class CollectionItemCreateManyArgs {
+  @TypeGraphQLField(() => [CollectionItemCreateInput])
+  data!: CollectionItemCreateInput[];
+}
+
+@ArgsType()
+export class CollectionItemUpdateArgs {
+  @TypeGraphQLField() data!: CollectionItemUpdateInput;
+  @TypeGraphQLField() where!: CollectionItemWhereUniqueInput;
 }

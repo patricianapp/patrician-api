@@ -1,4 +1,5 @@
-import { BaseModel, Model, StringField } from 'warthog';
+import { BaseModel, Model, OneToMany, StringField } from 'warthog';
+import { CollectionItem } from '../collection-item/collection-item.model';
 
 @Model()
 export class User extends BaseModel {
@@ -7,4 +8,13 @@ export class User extends BaseModel {
 
   @StringField({ nullable: true })
   email?: string;
-}
+
+  @StringField({ nullable: true })
+  bio?: string;
+
+  @OneToMany(
+    () => CollectionItem,
+    (collectionItem: CollectionItem) => collectionItem.user
+  )
+  collection?: CollectionItem[];
+  }
