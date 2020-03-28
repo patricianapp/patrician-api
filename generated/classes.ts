@@ -414,14 +414,14 @@ export class ItemCreateInput {
   @TypeGraphQLField(() => ID, { nullable: true })
   spotifyId?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  title?: string;
+  @TypeGraphQLField()
+  title!: string;
 
   @TypeGraphQLField({ nullable: true })
   disambiguation?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  artist?: string;
+  @TypeGraphQLField()
+  artist!: string;
 }
 
 @TypeGraphQLInputType()

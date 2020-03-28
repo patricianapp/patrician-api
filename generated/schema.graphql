@@ -166,9 +166,9 @@ type Item implements BaseGraphQLObject {
   mbid: String
   rymId: Int
   spotifyId: String
-  title: String
+  title: String!
   disambiguation: String
-  artist: String
+  artist: String!
   collectionItem: [CollectionItem!]
 }
 
@@ -176,9 +176,9 @@ input ItemCreateInput {
   mbid: String
   rymId: Float
   spotifyId: ID
-  title: String
+  title: String!
   disambiguation: String
-  artist: String
+  artist: String!
 }
 
 enum ItemOrderByInput {

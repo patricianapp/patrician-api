@@ -184,9 +184,9 @@ export interface ItemCreateInput {
   mbid?: String | null
   rymId?: Float | null
   spotifyId?: ID_Input | null
-  title?: String | null
+  title: String
   disambiguation?: String | null
-  artist?: String | null
+  artist: String
 }
 
 export interface ItemUpdateInput {
@@ -375,9 +375,9 @@ export interface Item extends BaseGraphQLObject {
   mbid?: String | null
   rymId?: Int | null
   spotifyId?: String | null
-  title?: String | null
+  title: String
   disambiguation?: String | null
-  artist?: String | null
+  artist: String
   collectionItem?: Array<CollectionItem> | null
 }
 
