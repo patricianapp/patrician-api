@@ -1,6 +1,6 @@
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Mutation, Query, Resolver, FieldResolver, Root, Ctx } from 'type-graphql';
 import { Inject } from 'typedi';
-import { Fields, StandardDeleteResponse, UserId } from 'warthog';
+import { Fields, StandardDeleteResponse, UserId, BaseContext } from 'warthog';
 
 import {
   UserCreateInput,
@@ -13,6 +13,7 @@ import {
 
 import { User } from './user.model';
 import { UserService } from './user.service';
+import { CollectionItem } from '../collection-item/collection-item.model';
 
 @Resolver(User)
 export class UserResolver {
@@ -29,6 +30,11 @@ export class UserResolver {
   @Query(() => User)
   async user(@Arg('where') where: UserWhereUniqueInput): Promise<User> {
     return this.service.findOne<UserWhereUniqueInput>(where);
+  }
+
+  @FieldResolver(() => [CollectionItem])
+  collection(@Root() user: User, @Ctx() ctx: BaseContext): Promise<CollectionItem[]> {
+    return ctx.dataLoader.loaders.User.collection.load(user);
   }
 
   @Mutation(() => User)
