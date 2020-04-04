@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { BaseContext, Server } from 'warthog';
+import { BaseContext, Server, authChecker } from 'warthog';
 
 import { Logger } from './logger';
 
@@ -15,13 +15,15 @@ interface Context extends BaseContext {
 export function getServer(AppOptions = {}, dbOptions = {}) {
   return new Server<Context>(
     {
+      authChecker,
       // Inject a fake user.  In a real app you'd parse a JWT to add the user
       context: (request: any) => {
         const userId = JSON.stringify(request.headers).length.toString();
 
         return {
           user: {
-            id: `user:${userId}`
+            id: `user:${userId}`,
+            permissions: ['signedIn']
           }
         };
       },
