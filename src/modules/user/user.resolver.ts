@@ -1,4 +1,4 @@
-import { Arg, Args, Mutation, Query, Resolver, FieldResolver, Root, Ctx } from 'type-graphql';
+import { Arg, Args, Mutation, Query, Resolver, FieldResolver, Root, Ctx, Authorized } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Fields, StandardDeleteResponse, UserId, BaseContext } from 'warthog';
 
@@ -37,6 +37,7 @@ export class UserResolver {
     return ctx.dataLoader.loaders.User.collection.load(user);
   }
 
+  @Authorized('signedIn')
   @Mutation(() => User)
   async createUser(@Arg('data') data: UserCreateInput, @UserId() userId: string): Promise<User> {
     return this.service.create(data, userId);
