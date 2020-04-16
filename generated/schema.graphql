@@ -70,6 +70,11 @@ type CollectionItem implements BaseGraphQLObject {
   userId: String!
   itemDetails: Item
   itemDetailsId: String!
+  plays: Int
+  artist: String!
+  title: String!
+  mbid: String
+  reviews: [Review!]
 }
 
 input CollectionItemCreateInput {
@@ -77,6 +82,10 @@ input CollectionItemCreateInput {
   customArtist: String
   userId: ID!
   itemDetailsId: ID!
+  plays: Float
+  artist: String!
+  title: String!
+  mbid: String
 }
 
 enum CollectionItemOrderByInput {
@@ -94,6 +103,14 @@ enum CollectionItemOrderByInput {
   userId_DESC
   itemDetailsId_ASC
   itemDetailsId_DESC
+  plays_ASC
+  plays_DESC
+  artist_ASC
+  artist_DESC
+  title_ASC
+  title_DESC
+  mbid_ASC
+  mbid_DESC
 }
 
 input CollectionItemUpdateInput {
@@ -101,30 +118,37 @@ input CollectionItemUpdateInput {
   customArtist: String
   userId: ID
   itemDetailsId: ID
+  plays: Float
+  artist: String
+  title: String
+  mbid: String
 }
 
 input CollectionItemWhereInput {
-  id_eq: String
-  id_in: [String!]
-  createdAt_eq: String
-  createdAt_lt: String
-  createdAt_lte: String
-  createdAt_gt: String
-  createdAt_gte: String
-  createdById_eq: String
-  updatedAt_eq: String
-  updatedAt_lt: String
-  updatedAt_lte: String
-  updatedAt_gt: String
-  updatedAt_gte: String
-  updatedById_eq: String
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
   deletedAt_all: Boolean
-  deletedAt_eq: String
-  deletedAt_lt: String
-  deletedAt_lte: String
-  deletedAt_gt: String
-  deletedAt_gte: String
-  deletedById_eq: String
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
   customTitle_eq: String
   customTitle_contains: String
   customTitle_startsWith: String
@@ -139,10 +163,31 @@ input CollectionItemWhereInput {
   userId_in: [ID!]
   itemDetailsId_eq: ID
   itemDetailsId_in: [ID!]
+  plays_eq: Int
+  plays_gt: Int
+  plays_gte: Int
+  plays_lt: Int
+  plays_lte: Int
+  plays_in: [Int!]
+  artist_eq: String
+  artist_contains: String
+  artist_startsWith: String
+  artist_endsWith: String
+  artist_in: [String!]
+  title_eq: String
+  title_contains: String
+  title_startsWith: String
+  title_endsWith: String
+  title_in: [String!]
+  mbid_eq: String
+  mbid_contains: String
+  mbid_startsWith: String
+  mbid_endsWith: String
+  mbid_in: [String!]
 }
 
 input CollectionItemWhereUniqueInput {
-  id: String!
+  id: ID!
 }
 
 """
@@ -175,7 +220,7 @@ type Item implements BaseGraphQLObject {
 input ItemCreateInput {
   mbid: String
   rymId: Float
-  spotifyId: ID
+  spotifyId: String
   title: String!
   disambiguation: String
   artist: String!
@@ -205,34 +250,37 @@ enum ItemOrderByInput {
 input ItemUpdateInput {
   mbid: String
   rymId: Float
-  spotifyId: ID
+  spotifyId: String
   title: String
   disambiguation: String
   artist: String
 }
 
 input ItemWhereInput {
-  id_eq: String
-  id_in: [String!]
-  createdAt_eq: String
-  createdAt_lt: String
-  createdAt_lte: String
-  createdAt_gt: String
-  createdAt_gte: String
-  createdById_eq: String
-  updatedAt_eq: String
-  updatedAt_lt: String
-  updatedAt_lte: String
-  updatedAt_gt: String
-  updatedAt_gte: String
-  updatedById_eq: String
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
   deletedAt_all: Boolean
-  deletedAt_eq: String
-  deletedAt_lt: String
-  deletedAt_lte: String
-  deletedAt_gt: String
-  deletedAt_gte: String
-  deletedById_eq: String
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
   mbid_eq: String
   mbid_contains: String
   mbid_startsWith: String
@@ -244,8 +292,11 @@ input ItemWhereInput {
   rymId_lt: Int
   rymId_lte: Int
   rymId_in: [Int!]
-  spotifyId_eq: ID
-  spotifyId_in: [ID!]
+  spotifyId_eq: String
+  spotifyId_contains: String
+  spotifyId_startsWith: String
+  spotifyId_endsWith: String
+  spotifyId_in: [String!]
   title_eq: String
   title_contains: String
   title_startsWith: String
@@ -264,8 +315,13 @@ input ItemWhereInput {
 }
 
 input ItemWhereUniqueInput {
-  id: String!
+  id: ID!
 }
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
 
 type Mutation {
   createCollectionItem(data: CollectionItemCreateInput!): CollectionItem!
@@ -276,10 +332,22 @@ type Mutation {
   createManyItems(data: [ItemCreateInput!]!): [Item!]!
   updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item!
   deleteItem(where: ItemWhereUniqueInput!): StandardDeleteResponse!
+  createReview(data: ReviewCreateInput!): Review!
+  createManyReviews(data: [ReviewCreateInput!]!): [Review!]!
+  updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review!
+  deleteReview(where: ReviewWhereUniqueInput!): StandardDeleteResponse!
   createUser(data: UserCreateInput!): User!
   createManyUsers(data: [UserCreateInput!]!): [User!]!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   deleteUser(where: UserWhereUniqueInput!): StandardDeleteResponse!
+}
+
+type PageInfo {
+  limit: Float!
+  offset: Float!
+  totalCount: Float!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
 }
 
 type Query {
@@ -287,8 +355,105 @@ type Query {
   collectionItem(where: CollectionItemWhereUniqueInput!): CollectionItem!
   items(offset: Int, limit: Int = 50, where: ItemWhereInput, orderBy: ItemOrderByInput): [Item!]!
   item(where: ItemWhereUniqueInput!): Item!
+  reviews(offset: Int, limit: Int = 50, where: ReviewWhereInput, orderBy: ReviewOrderByInput): [Review!]!
+  review(where: ReviewWhereUniqueInput!): Review!
   users(offset: Int, limit: Int = 50, where: UserWhereInput, orderBy: UserOrderByInput): [User!]!
   user(where: UserWhereUniqueInput!): User!
+}
+
+type Review implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  collectionItem: CollectionItem
+  collectionItemId: String!
+  rating: String
+  title: String
+  reviewText: String
+}
+
+input ReviewCreateInput {
+  collectionItemId: ID!
+  rating: String
+  title: String
+  reviewText: String
+}
+
+enum ReviewOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  collectionItemId_ASC
+  collectionItemId_DESC
+  rating_ASC
+  rating_DESC
+  title_ASC
+  title_DESC
+  reviewText_ASC
+  reviewText_DESC
+}
+
+input ReviewUpdateInput {
+  collectionItemId: ID
+  rating: String
+  title: String
+  reviewText: String
+}
+
+input ReviewWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  collectionItemId_eq: ID
+  collectionItemId_in: [ID!]
+  rating_eq: String
+  rating_contains: String
+  rating_startsWith: String
+  rating_endsWith: String
+  rating_in: [String!]
+  title_eq: String
+  title_contains: String
+  title_startsWith: String
+  title_endsWith: String
+  title_in: [String!]
+  reviewText_eq: String
+  reviewText_contains: String
+  reviewText_startsWith: String
+  reviewText_endsWith: String
+  reviewText_in: [String!]
+}
+
+input ReviewWhereUniqueInput {
+  id: ID!
 }
 
 type StandardDeleteResponse {
@@ -307,13 +472,16 @@ type User implements BaseGraphQLObject {
   username: String!
   email: String
   bio: String
+  accountSettings: JSONObject
   collection: [CollectionItem!]
 }
 
 input UserCreateInput {
   username: String!
   email: String
+  password: String!
   bio: String
+  accountSettings: JSONObject
 }
 
 enum UserOrderByInput {
@@ -334,31 +502,36 @@ enum UserOrderByInput {
 input UserUpdateInput {
   username: String
   email: String
+  password: String
   bio: String
+  accountSettings: JSONObject
 }
 
 input UserWhereInput {
-  id_eq: String
-  id_in: [String!]
-  createdAt_eq: String
-  createdAt_lt: String
-  createdAt_lte: String
-  createdAt_gt: String
-  createdAt_gte: String
-  createdById_eq: String
-  updatedAt_eq: String
-  updatedAt_lt: String
-  updatedAt_lte: String
-  updatedAt_gt: String
-  updatedAt_gte: String
-  updatedById_eq: String
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
   deletedAt_all: Boolean
-  deletedAt_eq: String
-  deletedAt_lt: String
-  deletedAt_lte: String
-  deletedAt_gt: String
-  deletedAt_gte: String
-  deletedById_eq: String
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
   username_eq: String
   username_contains: String
   username_startsWith: String
@@ -374,8 +547,10 @@ input UserWhereInput {
   bio_startsWith: String
   bio_endsWith: String
   bio_in: [String!]
+  accountSettings_json: JSONObject
 }
 
 input UserWhereUniqueInput {
-  id: String!
+  id: ID
+  email: String
 }

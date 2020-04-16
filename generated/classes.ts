@@ -3,8 +3,8 @@
 // new TypeGraphQL objects
 // @ts-ignore
 import { GraphQLDateTime as DateTime } from "graphql-iso-date";
+// @ts-ignore
 import { GraphQLID as ID } from "graphql";
-
 // @ts-ignore
 import {
   ArgsType,
@@ -25,6 +25,8 @@ import { BaseWhereInput, JsonObject, PaginationArgs } from "warthog";
 import { User } from "../src/modules/user/user.model";
 // @ts-ignore
 import { Item } from "../src/modules/item/item.model";
+// @ts-ignore
+import { Review } from "../src/modules/review/review.model";
 // @ts-ignore
 import { CollectionItem } from "../src/modules/collection-item/collection-item.model";
 
@@ -54,68 +56,77 @@ registerEnumType(UserOrderByEnum, {
 
 @TypeGraphQLInputType()
 export class UserWhereInput {
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   id_eq?: string;
 
-  @TypeGraphQLField(() => [String], { nullable: true })
+  @TypeGraphQLField(() => [ID], { nullable: true })
   id_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_eq?: String;
+  createdAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lt?: String;
+  createdAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lte?: String;
+  createdAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gt?: String;
+  createdAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gte?: String;
+  createdAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   createdById_eq?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  updatedAt_eq?: String;
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lt?: String;
+  updatedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lte?: String;
+  updatedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gt?: String;
+  updatedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gte?: String;
+  updatedAt_gt?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
   updatedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  updatedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   deletedAt_all?: Boolean;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_eq?: String;
+  deletedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lt?: String;
+  deletedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lte?: String;
+  deletedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gt?: String;
+  deletedAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gte?: String;
+  deletedAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   deletedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  deletedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   username_eq?: string;
@@ -161,12 +172,18 @@ export class UserWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   bio_in?: string[];
+
+  @TypeGraphQLField(() => GraphQLJSONObject, { nullable: true })
+  accountSettings_json?: JsonObject;
 }
 
 @TypeGraphQLInputType()
 export class UserWhereUniqueInput {
-  @TypeGraphQLField(() => String)
+  @TypeGraphQLField(() => ID, { nullable: true })
   id?: string;
+
+  @TypeGraphQLField(() => String, { nullable: true })
+  email?: string;
 }
 
 @TypeGraphQLInputType()
@@ -177,8 +194,14 @@ export class UserCreateInput {
   @TypeGraphQLField({ nullable: true })
   email?: string;
 
+  @TypeGraphQLField()
+  password!: string;
+
   @TypeGraphQLField({ nullable: true })
   bio?: string;
+
+  @TypeGraphQLField(() => GraphQLJSONObject, { nullable: true })
+  accountSettings?: JsonObject;
 }
 
 @TypeGraphQLInputType()
@@ -190,7 +213,13 @@ export class UserUpdateInput {
   email?: string;
 
   @TypeGraphQLField({ nullable: true })
+  password?: string;
+
+  @TypeGraphQLField({ nullable: true })
   bio?: string;
+
+  @TypeGraphQLField(() => GraphQLJSONObject, { nullable: true })
+  accountSettings?: JsonObject;
 }
 
 @ArgsType()
@@ -249,68 +278,77 @@ registerEnumType(ItemOrderByEnum, {
 
 @TypeGraphQLInputType()
 export class ItemWhereInput {
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   id_eq?: string;
 
-  @TypeGraphQLField(() => [String], { nullable: true })
+  @TypeGraphQLField(() => [ID], { nullable: true })
   id_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_eq?: String;
+  createdAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lt?: String;
+  createdAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lte?: String;
+  createdAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gt?: String;
+  createdAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gte?: String;
+  createdAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   createdById_eq?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  updatedAt_eq?: String;
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lt?: String;
+  updatedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lte?: String;
+  updatedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gt?: String;
+  updatedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gte?: String;
+  updatedAt_gt?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
   updatedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  updatedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   deletedAt_all?: Boolean;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_eq?: String;
+  deletedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lt?: String;
+  deletedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lte?: String;
+  deletedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gt?: String;
+  deletedAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gte?: String;
+  deletedAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   deletedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  deletedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   mbid_eq?: string;
@@ -345,10 +383,19 @@ export class ItemWhereInput {
   @TypeGraphQLField(() => [Int], { nullable: true })
   rymId_in?: number[];
 
-  @TypeGraphQLField(() => ID, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
   spotifyId_eq?: string;
 
-  @TypeGraphQLField(() => [ID], { nullable: true })
+  @TypeGraphQLField({ nullable: true })
+  spotifyId_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  spotifyId_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  spotifyId_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
   spotifyId_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
@@ -399,7 +446,7 @@ export class ItemWhereInput {
 
 @TypeGraphQLInputType()
 export class ItemWhereUniqueInput {
-  @TypeGraphQLField(() => String)
+  @TypeGraphQLField(() => ID)
   id?: string;
 }
 
@@ -411,7 +458,7 @@ export class ItemCreateInput {
   @TypeGraphQLField({ nullable: true })
   rymId?: number;
 
-  @TypeGraphQLField(() => ID, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
   spotifyId?: string;
 
   @TypeGraphQLField()
@@ -432,7 +479,7 @@ export class ItemUpdateInput {
   @TypeGraphQLField({ nullable: true })
   rymId?: number;
 
-  @TypeGraphQLField(() => ID, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
   spotifyId?: string;
 
   @TypeGraphQLField({ nullable: true })
@@ -466,6 +513,216 @@ export class ItemUpdateArgs {
   @TypeGraphQLField() where!: ItemWhereUniqueInput;
 }
 
+export enum ReviewOrderByEnum {
+  createdAt_ASC = "createdAt_ASC",
+  createdAt_DESC = "createdAt_DESC",
+
+  updatedAt_ASC = "updatedAt_ASC",
+  updatedAt_DESC = "updatedAt_DESC",
+
+  deletedAt_ASC = "deletedAt_ASC",
+  deletedAt_DESC = "deletedAt_DESC",
+
+  collectionItemId_ASC = "collectionItemId_ASC",
+  collectionItemId_DESC = "collectionItemId_DESC",
+
+  rating_ASC = "rating_ASC",
+  rating_DESC = "rating_DESC",
+
+  title_ASC = "title_ASC",
+  title_DESC = "title_DESC",
+
+  reviewText_ASC = "reviewText_ASC",
+  reviewText_DESC = "reviewText_DESC"
+}
+
+registerEnumType(ReviewOrderByEnum, {
+  name: "ReviewOrderByInput"
+});
+
+@TypeGraphQLInputType()
+export class ReviewWhereInput {
+  @TypeGraphQLField(() => ID, { nullable: true })
+  id_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  id_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_eq?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_lte?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  createdAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  createdById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdById_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_eq?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_lte?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  updatedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  updatedById_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_all?: Boolean;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_eq?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_lte?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gt?: Date;
+
+  @TypeGraphQLField({ nullable: true })
+  deletedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  deletedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  deletedById_in?: string[];
+
+  @TypeGraphQLField(() => ID, { nullable: true })
+  collectionItemId_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  collectionItemId_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  rating_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rating_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rating_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rating_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  rating_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  title_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  title_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  reviewText_in?: string[];
+}
+
+@TypeGraphQLInputType()
+export class ReviewWhereUniqueInput {
+  @TypeGraphQLField(() => ID)
+  id?: string;
+}
+
+@TypeGraphQLInputType()
+export class ReviewCreateInput {
+  @TypeGraphQLField(() => ID)
+  collectionItemId!: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rating?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText?: string;
+}
+
+@TypeGraphQLInputType()
+export class ReviewUpdateInput {
+  @TypeGraphQLField(() => ID, { nullable: true })
+  collectionItemId?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  rating?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  reviewText?: string;
+}
+
+@ArgsType()
+export class ReviewWhereArgs extends PaginationArgs {
+  @TypeGraphQLField(() => ReviewWhereInput, { nullable: true })
+  where?: ReviewWhereInput;
+
+  @TypeGraphQLField(() => ReviewOrderByEnum, { nullable: true })
+  orderBy?: ReviewOrderByEnum;
+}
+
+@ArgsType()
+export class ReviewCreateManyArgs {
+  @TypeGraphQLField(() => [ReviewCreateInput])
+  data!: ReviewCreateInput[];
+}
+
+@ArgsType()
+export class ReviewUpdateArgs {
+  @TypeGraphQLField() data!: ReviewUpdateInput;
+  @TypeGraphQLField() where!: ReviewWhereUniqueInput;
+}
+
 export enum CollectionItemOrderByEnum {
   createdAt_ASC = "createdAt_ASC",
   createdAt_DESC = "createdAt_DESC",
@@ -486,7 +743,19 @@ export enum CollectionItemOrderByEnum {
   userId_DESC = "userId_DESC",
 
   itemDetailsId_ASC = "itemDetailsId_ASC",
-  itemDetailsId_DESC = "itemDetailsId_DESC"
+  itemDetailsId_DESC = "itemDetailsId_DESC",
+
+  plays_ASC = "plays_ASC",
+  plays_DESC = "plays_DESC",
+
+  artist_ASC = "artist_ASC",
+  artist_DESC = "artist_DESC",
+
+  title_ASC = "title_ASC",
+  title_DESC = "title_DESC",
+
+  mbid_ASC = "mbid_ASC",
+  mbid_DESC = "mbid_DESC"
 }
 
 registerEnumType(CollectionItemOrderByEnum, {
@@ -495,68 +764,77 @@ registerEnumType(CollectionItemOrderByEnum, {
 
 @TypeGraphQLInputType()
 export class CollectionItemWhereInput {
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   id_eq?: string;
 
-  @TypeGraphQLField(() => [String], { nullable: true })
+  @TypeGraphQLField(() => [ID], { nullable: true })
   id_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_eq?: String;
+  createdAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lt?: String;
+  createdAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_lte?: String;
+  createdAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gt?: String;
+  createdAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  createdAt_gte?: String;
+  createdAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   createdById_eq?: string;
 
-  @TypeGraphQLField({ nullable: true })
-  updatedAt_eq?: String;
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  createdById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lt?: String;
+  updatedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_lte?: String;
+  updatedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gt?: String;
+  updatedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  updatedAt_gte?: String;
+  updatedAt_gt?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField({ nullable: true })
+  updatedAt_gte?: Date;
+
+  @TypeGraphQLField(() => ID, { nullable: true })
   updatedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  updatedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   deletedAt_all?: Boolean;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_eq?: String;
+  deletedAt_eq?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lt?: String;
+  deletedAt_lt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_lte?: String;
+  deletedAt_lte?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gt?: String;
+  deletedAt_gt?: Date;
 
   @TypeGraphQLField({ nullable: true })
-  deletedAt_gte?: String;
+  deletedAt_gte?: Date;
 
-  @TypeGraphQLField(() => String, { nullable: true })
+  @TypeGraphQLField(() => ID, { nullable: true })
   deletedById_eq?: string;
+
+  @TypeGraphQLField(() => [ID], { nullable: true })
+  deletedById_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
   customTitle_eq?: string;
@@ -599,11 +877,74 @@ export class CollectionItemWhereInput {
 
   @TypeGraphQLField(() => [ID], { nullable: true })
   itemDetailsId_in?: string[];
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  plays_eq?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  plays_gt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  plays_gte?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  plays_lt?: number;
+
+  @TypeGraphQLField(() => Int, { nullable: true })
+  plays_lte?: number;
+
+  @TypeGraphQLField(() => [Int], { nullable: true })
+  plays_in?: number[];
+
+  @TypeGraphQLField({ nullable: true })
+  artist_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  artist_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  artist_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  title_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  title_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  mbid_in?: string[];
 }
 
 @TypeGraphQLInputType()
 export class CollectionItemWhereUniqueInput {
-  @TypeGraphQLField(() => String)
+  @TypeGraphQLField(() => ID)
   id?: string;
 }
 
@@ -620,6 +961,18 @@ export class CollectionItemCreateInput {
 
   @TypeGraphQLField(() => ID)
   itemDetailsId!: string;
+
+  @TypeGraphQLField({ nullable: true })
+  plays?: number;
+
+  @TypeGraphQLField()
+  artist!: string;
+
+  @TypeGraphQLField()
+  title!: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
 }
 
 @TypeGraphQLInputType()
@@ -635,6 +988,18 @@ export class CollectionItemUpdateInput {
 
   @TypeGraphQLField(() => ID, { nullable: true })
   itemDetailsId?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  plays?: number;
+
+  @TypeGraphQLField({ nullable: true })
+  artist?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  title?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
 }
 
 @ArgsType()

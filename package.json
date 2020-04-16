@@ -1,8 +1,9 @@
 {
   "name": "patrician-api",
-  "version": "0.0.0",
-  "description": "Generated Warthog Project",
+  "version": "0.1.0-beta",
+  "description": "Patrician API",
   "license": "MIT",
+  "author": "Patrician Team",
   "scripts": {
     "bootstrap": "yarn bootstrap:dev",
     "bootstrap:dev": "yarn && yarn build:dev && yarn db:drop && yarn db:create && yarn db:migrate && yarn db:seed",
@@ -101,5 +102,9 @@
   },
   "resolutions": {
     "ts-node": "7.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patricianapp/patrician-api.git"
   }
 }
