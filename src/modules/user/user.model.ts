@@ -26,5 +26,5 @@ export class User extends BaseModel {
     () => CollectionItem,
     (collectionItem: CollectionItem) => collectionItem.user
   )
-  collection?: CollectionItem[]; // TODO: Initialize to empty array
+  collection?: CollectionItem[];
   }

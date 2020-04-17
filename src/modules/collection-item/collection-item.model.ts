@@ -26,15 +26,21 @@ export class CollectionItem extends BaseModel {
   @IntField({ nullable: true, default: 0 })
   plays?: number
 
-  @StringField({ apiOnly: true })
-  get artist(): string {
-    return this.itemDetails.artist;
-  }
+  // needs to be nullable for writes
+  // FIXME: This is calling the database even though apiOnly is true
+  // (Only occurs for mutation collectionItems, not collectionItem)
+  // TODO: The other problem seems to be that this.itemDetails doesn't exist by the time the resolver responds
+  // @StringField({ apiOnly: true, nullable: true })
+  // get artist(): string {
+  //   return this.itemDetails.artist;
+  // }
 
-  @StringField({ apiOnly: true })
-  get title(): string {
-    return this.itemDetails.title;
-  }
+  // these fields are not required for the field resolvers to work
+  // however they may be required to make fields nullable
+  // @StringField({ apiOnly: true, nullable: true })
+  // get title(): string {
+  //   return this.itemDetails.title;
+  // }
 
   @StringField({ apiOnly: true, nullable: true })
   get mbid(): string | undefined {
@@ -47,7 +53,7 @@ export class CollectionItem extends BaseModel {
   )
   reviews?: Review[];
 
-  // FIXME: warthog codegen fails because of optional chaining
+  // FIXME: warthog codegen fails when using optional chaining
   // @StringField({ apiOnly: true, nullable: true })
   // get rating(): string | undefined {
   //   return this.reviews?.pop()?.rating; // TODO: Do we need the second question mark?

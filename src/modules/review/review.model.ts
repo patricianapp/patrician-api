@@ -16,5 +16,5 @@ export class Review extends BaseModel {
   title?: string;
 
   @StringField({ nullable: true })
-  reviewText?: string;
+  body?: string;
 }

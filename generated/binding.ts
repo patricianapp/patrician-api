@@ -76,13 +76,7 @@ export type CollectionItemOrderByInput =   'createdAt_ASC' |
   'itemDetailsId_ASC' |
   'itemDetailsId_DESC' |
   'plays_ASC' |
-  'plays_DESC' |
-  'artist_ASC' |
-  'artist_DESC' |
-  'title_ASC' |
-  'title_DESC' |
-  'mbid_ASC' |
-  'mbid_DESC'
+  'plays_DESC'
 
 export type ItemOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -115,8 +109,8 @@ export type ReviewOrderByInput =   'createdAt_ASC' |
   'rating_DESC' |
   'title_ASC' |
   'title_DESC' |
-  'reviewText_ASC' |
-  'reviewText_DESC'
+  'body_ASC' |
+  'body_DESC'
 
 export type UserOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -161,9 +155,6 @@ export interface CollectionItemCreateInput {
   userId: ID_Output
   itemDetailsId: ID_Output
   plays?: Float | null
-  artist: String
-  title: String
-  mbid?: String | null
 }
 
 export interface CollectionItemUpdateInput {
@@ -172,9 +163,6 @@ export interface CollectionItemUpdateInput {
   userId?: ID_Input | null
   itemDetailsId?: ID_Input | null
   plays?: Float | null
-  artist?: String | null
-  title?: String | null
-  mbid?: String | null
 }
 
 export interface CollectionItemWhereInput {
@@ -222,21 +210,6 @@ export interface CollectionItemWhereInput {
   plays_lt?: Int | null
   plays_lte?: Int | null
   plays_in?: Int[] | Int | null
-  artist_eq?: String | null
-  artist_contains?: String | null
-  artist_startsWith?: String | null
-  artist_endsWith?: String | null
-  artist_in?: String[] | String | null
-  title_eq?: String | null
-  title_contains?: String | null
-  title_startsWith?: String | null
-  title_endsWith?: String | null
-  title_in?: String[] | String | null
-  mbid_eq?: String | null
-  mbid_contains?: String | null
-  mbid_startsWith?: String | null
-  mbid_endsWith?: String | null
-  mbid_in?: String[] | String | null
 }
 
 export interface CollectionItemWhereUniqueInput {
@@ -327,14 +300,14 @@ export interface ReviewCreateInput {
   collectionItemId: ID_Output
   rating?: String | null
   title?: String | null
-  reviewText?: String | null
+  body?: String | null
 }
 
 export interface ReviewUpdateInput {
   collectionItemId?: ID_Input | null
   rating?: String | null
   title?: String | null
-  reviewText?: String | null
+  body?: String | null
 }
 
 export interface ReviewWhereInput {
@@ -374,11 +347,11 @@ export interface ReviewWhereInput {
   title_startsWith?: String | null
   title_endsWith?: String | null
   title_in?: String[] | String | null
-  reviewText_eq?: String | null
-  reviewText_contains?: String | null
-  reviewText_startsWith?: String | null
-  reviewText_endsWith?: String | null
-  reviewText_in?: String[] | String | null
+  body_eq?: String | null
+  body_contains?: String | null
+  body_startsWith?: String | null
+  body_endsWith?: String | null
+  body_in?: String[] | String | null
 }
 
 export interface ReviewWhereUniqueInput {
@@ -502,10 +475,10 @@ export interface CollectionItem extends BaseGraphQLObject {
   itemDetails?: Item | null
   itemDetailsId: String
   plays?: Int | null
+  reviews?: Array<Review> | null
   artist: String
   title: String
-  mbid?: String | null
-  reviews?: Array<Review> | null
+  mbid: String
 }
 
 export interface Item extends BaseGraphQLObject {
@@ -547,7 +520,7 @@ export interface Review extends BaseGraphQLObject {
   collectionItemId: String
   rating?: String | null
   title?: String | null
-  reviewText?: String | null
+  body?: String | null
 }
 
 export interface StandardDeleteResponse {

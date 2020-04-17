@@ -532,8 +532,8 @@ export enum ReviewOrderByEnum {
   title_ASC = "title_ASC",
   title_DESC = "title_DESC",
 
-  reviewText_ASC = "reviewText_ASC",
-  reviewText_DESC = "reviewText_DESC"
+  body_ASC = "body_ASC",
+  body_DESC = "body_DESC"
 }
 
 registerEnumType(ReviewOrderByEnum, {
@@ -651,19 +651,19 @@ export class ReviewWhereInput {
   title_in?: string[];
 
   @TypeGraphQLField({ nullable: true })
-  reviewText_eq?: string;
+  body_eq?: string;
 
   @TypeGraphQLField({ nullable: true })
-  reviewText_contains?: string;
+  body_contains?: string;
 
   @TypeGraphQLField({ nullable: true })
-  reviewText_startsWith?: string;
+  body_startsWith?: string;
 
   @TypeGraphQLField({ nullable: true })
-  reviewText_endsWith?: string;
+  body_endsWith?: string;
 
   @TypeGraphQLField(() => [String], { nullable: true })
-  reviewText_in?: string[];
+  body_in?: string[];
 }
 
 @TypeGraphQLInputType()
@@ -684,7 +684,7 @@ export class ReviewCreateInput {
   title?: string;
 
   @TypeGraphQLField({ nullable: true })
-  reviewText?: string;
+  body?: string;
 }
 
 @TypeGraphQLInputType()
@@ -699,7 +699,7 @@ export class ReviewUpdateInput {
   title?: string;
 
   @TypeGraphQLField({ nullable: true })
-  reviewText?: string;
+  body?: string;
 }
 
 @ArgsType()
@@ -746,16 +746,7 @@ export enum CollectionItemOrderByEnum {
   itemDetailsId_DESC = "itemDetailsId_DESC",
 
   plays_ASC = "plays_ASC",
-  plays_DESC = "plays_DESC",
-
-  artist_ASC = "artist_ASC",
-  artist_DESC = "artist_DESC",
-
-  title_ASC = "title_ASC",
-  title_DESC = "title_DESC",
-
-  mbid_ASC = "mbid_ASC",
-  mbid_DESC = "mbid_DESC"
+  plays_DESC = "plays_DESC"
 }
 
 registerEnumType(CollectionItemOrderByEnum, {
@@ -895,51 +886,6 @@ export class CollectionItemWhereInput {
 
   @TypeGraphQLField(() => [Int], { nullable: true })
   plays_in?: number[];
-
-  @TypeGraphQLField({ nullable: true })
-  artist_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  artist_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  artist_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  artist_endsWith?: string;
-
-  @TypeGraphQLField(() => [String], { nullable: true })
-  artist_in?: string[];
-
-  @TypeGraphQLField({ nullable: true })
-  title_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  title_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  title_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  title_endsWith?: string;
-
-  @TypeGraphQLField(() => [String], { nullable: true })
-  title_in?: string[];
-
-  @TypeGraphQLField({ nullable: true })
-  mbid_eq?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  mbid_contains?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  mbid_startsWith?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  mbid_endsWith?: string;
-
-  @TypeGraphQLField(() => [String], { nullable: true })
-  mbid_in?: string[];
 }
 
 @TypeGraphQLInputType()
@@ -964,15 +910,6 @@ export class CollectionItemCreateInput {
 
   @TypeGraphQLField({ nullable: true })
   plays?: number;
-
-  @TypeGraphQLField()
-  artist!: string;
-
-  @TypeGraphQLField()
-  title!: string;
-
-  @TypeGraphQLField({ nullable: true })
-  mbid?: string;
 }
 
 @TypeGraphQLInputType()
@@ -991,15 +928,6 @@ export class CollectionItemUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   plays?: number;
-
-  @TypeGraphQLField({ nullable: true })
-  artist?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  title?: string;
-
-  @TypeGraphQLField({ nullable: true })
-  mbid?: string;
 }
 
 @ArgsType()

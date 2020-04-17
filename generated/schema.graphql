@@ -71,10 +71,10 @@ type CollectionItem implements BaseGraphQLObject {
   itemDetails: Item
   itemDetailsId: String!
   plays: Int
+  reviews: [Review!]
   artist: String!
   title: String!
-  mbid: String
-  reviews: [Review!]
+  mbid: String!
 }
 
 input CollectionItemCreateInput {
@@ -83,9 +83,6 @@ input CollectionItemCreateInput {
   userId: ID!
   itemDetailsId: ID!
   plays: Float
-  artist: String!
-  title: String!
-  mbid: String
 }
 
 enum CollectionItemOrderByInput {
@@ -105,12 +102,6 @@ enum CollectionItemOrderByInput {
   itemDetailsId_DESC
   plays_ASC
   plays_DESC
-  artist_ASC
-  artist_DESC
-  title_ASC
-  title_DESC
-  mbid_ASC
-  mbid_DESC
 }
 
 input CollectionItemUpdateInput {
@@ -119,9 +110,6 @@ input CollectionItemUpdateInput {
   userId: ID
   itemDetailsId: ID
   plays: Float
-  artist: String
-  title: String
-  mbid: String
 }
 
 input CollectionItemWhereInput {
@@ -169,21 +157,6 @@ input CollectionItemWhereInput {
   plays_lt: Int
   plays_lte: Int
   plays_in: [Int!]
-  artist_eq: String
-  artist_contains: String
-  artist_startsWith: String
-  artist_endsWith: String
-  artist_in: [String!]
-  title_eq: String
-  title_contains: String
-  title_startsWith: String
-  title_endsWith: String
-  title_in: [String!]
-  mbid_eq: String
-  mbid_contains: String
-  mbid_startsWith: String
-  mbid_endsWith: String
-  mbid_in: [String!]
 }
 
 input CollectionItemWhereUniqueInput {
@@ -374,14 +347,14 @@ type Review implements BaseGraphQLObject {
   collectionItemId: String!
   rating: String
   title: String
-  reviewText: String
+  body: String
 }
 
 input ReviewCreateInput {
   collectionItemId: ID!
   rating: String
   title: String
-  reviewText: String
+  body: String
 }
 
 enum ReviewOrderByInput {
@@ -397,15 +370,15 @@ enum ReviewOrderByInput {
   rating_DESC
   title_ASC
   title_DESC
-  reviewText_ASC
-  reviewText_DESC
+  body_ASC
+  body_DESC
 }
 
 input ReviewUpdateInput {
   collectionItemId: ID
   rating: String
   title: String
-  reviewText: String
+  body: String
 }
 
 input ReviewWhereInput {
@@ -445,11 +418,11 @@ input ReviewWhereInput {
   title_startsWith: String
   title_endsWith: String
   title_in: [String!]
-  reviewText_eq: String
-  reviewText_contains: String
-  reviewText_startsWith: String
-  reviewText_endsWith: String
-  reviewText_in: [String!]
+  body_eq: String
+  body_contains: String
+  body_startsWith: String
+  body_endsWith: String
+  body_in: [String!]
 }
 
 input ReviewWhereUniqueInput {
