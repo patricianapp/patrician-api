@@ -21,6 +21,9 @@ export class Item extends BaseModel {
   @StringField()
   artist!: string;
 
+  @StringField({ nullable: true })
+  coverArt?: string;
+
   @OneToMany(
     () => CollectionItem,
     (collectionItem: CollectionItem) => collectionItem.itemDetails

@@ -269,7 +269,10 @@ export enum ItemOrderByEnum {
   disambiguation_DESC = "disambiguation_DESC",
 
   artist_ASC = "artist_ASC",
-  artist_DESC = "artist_DESC"
+  artist_DESC = "artist_DESC",
+
+  coverArt_ASC = "coverArt_ASC",
+  coverArt_DESC = "coverArt_DESC"
 }
 
 registerEnumType(ItemOrderByEnum, {
@@ -442,6 +445,21 @@ export class ItemWhereInput {
 
   @TypeGraphQLField(() => [String], { nullable: true })
   artist_in?: string[];
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  coverArt_in?: string[];
 }
 
 @TypeGraphQLInputType()
@@ -469,6 +487,9 @@ export class ItemCreateInput {
 
   @TypeGraphQLField()
   artist!: string;
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt?: string;
 }
 
 @TypeGraphQLInputType()
@@ -490,6 +511,9 @@ export class ItemUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   artist?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  coverArt?: string;
 }
 
 @ArgsType()
@@ -746,7 +770,10 @@ export enum CollectionItemOrderByEnum {
   itemDetailsId_DESC = "itemDetailsId_DESC",
 
   plays_ASC = "plays_ASC",
-  plays_DESC = "plays_DESC"
+  plays_DESC = "plays_DESC",
+
+  mbid_ASC = "mbid_ASC",
+  mbid_DESC = "mbid_DESC"
 }
 
 registerEnumType(CollectionItemOrderByEnum, {
@@ -886,6 +913,21 @@ export class CollectionItemWhereInput {
 
   @TypeGraphQLField(() => [Int], { nullable: true })
   plays_in?: number[];
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_eq?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_contains?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_startsWith?: string;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid_endsWith?: string;
+
+  @TypeGraphQLField(() => [String], { nullable: true })
+  mbid_in?: string[];
 }
 
 @TypeGraphQLInputType()
@@ -910,6 +952,9 @@ export class CollectionItemCreateInput {
 
   @TypeGraphQLField({ nullable: true })
   plays?: number;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
 }
 
 @TypeGraphQLInputType()
@@ -928,6 +973,9 @@ export class CollectionItemUpdateInput {
 
   @TypeGraphQLField({ nullable: true })
   plays?: number;
+
+  @TypeGraphQLField({ nullable: true })
+  mbid?: string;
 }
 
 @ArgsType()

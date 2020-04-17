@@ -76,7 +76,9 @@ export type CollectionItemOrderByInput =   'createdAt_ASC' |
   'itemDetailsId_ASC' |
   'itemDetailsId_DESC' |
   'plays_ASC' |
-  'plays_DESC'
+  'plays_DESC' |
+  'mbid_ASC' |
+  'mbid_DESC'
 
 export type ItemOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -95,7 +97,9 @@ export type ItemOrderByInput =   'createdAt_ASC' |
   'disambiguation_ASC' |
   'disambiguation_DESC' |
   'artist_ASC' |
-  'artist_DESC'
+  'artist_DESC' |
+  'coverArt_ASC' |
+  'coverArt_DESC'
 
 export type ReviewOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -155,6 +159,7 @@ export interface CollectionItemCreateInput {
   userId: ID_Output
   itemDetailsId: ID_Output
   plays?: Float | null
+  mbid?: String | null
 }
 
 export interface CollectionItemUpdateInput {
@@ -163,6 +168,7 @@ export interface CollectionItemUpdateInput {
   userId?: ID_Input | null
   itemDetailsId?: ID_Input | null
   plays?: Float | null
+  mbid?: String | null
 }
 
 export interface CollectionItemWhereInput {
@@ -210,6 +216,11 @@ export interface CollectionItemWhereInput {
   plays_lt?: Int | null
   plays_lte?: Int | null
   plays_in?: Int[] | Int | null
+  mbid_eq?: String | null
+  mbid_contains?: String | null
+  mbid_startsWith?: String | null
+  mbid_endsWith?: String | null
+  mbid_in?: String[] | String | null
 }
 
 export interface CollectionItemWhereUniqueInput {
@@ -223,6 +234,7 @@ export interface ItemCreateInput {
   title: String
   disambiguation?: String | null
   artist: String
+  coverArt?: String | null
 }
 
 export interface ItemUpdateInput {
@@ -232,6 +244,7 @@ export interface ItemUpdateInput {
   title?: String | null
   disambiguation?: String | null
   artist?: String | null
+  coverArt?: String | null
 }
 
 export interface ItemWhereInput {
@@ -290,6 +303,11 @@ export interface ItemWhereInput {
   artist_startsWith?: String | null
   artist_endsWith?: String | null
   artist_in?: String[] | String | null
+  coverArt_eq?: String | null
+  coverArt_contains?: String | null
+  coverArt_startsWith?: String | null
+  coverArt_endsWith?: String | null
+  coverArt_in?: String[] | String | null
 }
 
 export interface ItemWhereUniqueInput {
@@ -475,10 +493,12 @@ export interface CollectionItem extends BaseGraphQLObject {
   itemDetails?: Item | null
   itemDetailsId: String
   plays?: Int | null
+  mbid?: String | null
   reviews?: Array<Review> | null
   artist: String
   title: String
-  mbid: String
+  rating: String
+  reviewBody: String
 }
 
 export interface Item extends BaseGraphQLObject {
@@ -496,6 +516,7 @@ export interface Item extends BaseGraphQLObject {
   title: String
   disambiguation?: String | null
   artist: String
+  coverArt?: String | null
   collectionItem?: Array<CollectionItem> | null
 }
 

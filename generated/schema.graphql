@@ -71,10 +71,12 @@ type CollectionItem implements BaseGraphQLObject {
   itemDetails: Item
   itemDetailsId: String!
   plays: Int
+  mbid: String
   reviews: [Review!]
   artist: String!
   title: String!
-  mbid: String!
+  rating: String!
+  reviewBody: String!
 }
 
 input CollectionItemCreateInput {
@@ -83,6 +85,7 @@ input CollectionItemCreateInput {
   userId: ID!
   itemDetailsId: ID!
   plays: Float
+  mbid: String
 }
 
 enum CollectionItemOrderByInput {
@@ -102,6 +105,8 @@ enum CollectionItemOrderByInput {
   itemDetailsId_DESC
   plays_ASC
   plays_DESC
+  mbid_ASC
+  mbid_DESC
 }
 
 input CollectionItemUpdateInput {
@@ -110,6 +115,7 @@ input CollectionItemUpdateInput {
   userId: ID
   itemDetailsId: ID
   plays: Float
+  mbid: String
 }
 
 input CollectionItemWhereInput {
@@ -157,6 +163,11 @@ input CollectionItemWhereInput {
   plays_lt: Int
   plays_lte: Int
   plays_in: [Int!]
+  mbid_eq: String
+  mbid_contains: String
+  mbid_startsWith: String
+  mbid_endsWith: String
+  mbid_in: [String!]
 }
 
 input CollectionItemWhereUniqueInput {
@@ -187,6 +198,7 @@ type Item implements BaseGraphQLObject {
   title: String!
   disambiguation: String
   artist: String!
+  coverArt: String
   collectionItem: [CollectionItem!]
 }
 
@@ -197,6 +209,7 @@ input ItemCreateInput {
   title: String!
   disambiguation: String
   artist: String!
+  coverArt: String
 }
 
 enum ItemOrderByInput {
@@ -218,6 +231,8 @@ enum ItemOrderByInput {
   disambiguation_DESC
   artist_ASC
   artist_DESC
+  coverArt_ASC
+  coverArt_DESC
 }
 
 input ItemUpdateInput {
@@ -227,6 +242,7 @@ input ItemUpdateInput {
   title: String
   disambiguation: String
   artist: String
+  coverArt: String
 }
 
 input ItemWhereInput {
@@ -285,6 +301,11 @@ input ItemWhereInput {
   artist_startsWith: String
   artist_endsWith: String
   artist_in: [String!]
+  coverArt_eq: String
+  coverArt_contains: String
+  coverArt_startsWith: String
+  coverArt_endsWith: String
+  coverArt_in: [String!]
 }
 
 input ItemWhereUniqueInput {
