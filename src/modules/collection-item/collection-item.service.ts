@@ -12,4 +12,8 @@ export class CollectionItemService extends BaseService<CollectionItem> {
   ) {
     super(CollectionItem, repository);
   }
+
+  async getWithItemDetails() {
+
+  }
 }

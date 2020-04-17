@@ -12,14 +12,17 @@ export class Item extends BaseModel {
   @StringField({ nullable: true })
   spotifyId?: string;
 
-  @StringField({ nullable: true })
-  title?: string;
+  @StringField()
+  title!: string;
 
   @StringField({ nullable: true })
   disambiguation?: string;
 
+  @StringField()
+  artist!: string;
+
   @StringField({ nullable: true })
-  artist?: string;
+  coverArt?: string;
 
   @OneToMany(
     () => CollectionItem,

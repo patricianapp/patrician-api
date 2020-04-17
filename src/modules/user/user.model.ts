@@ -1,16 +1,26 @@
-import { BaseModel, Model, OneToMany, StringField } from 'warthog';
+import { BaseModel, Model, OneToMany, StringField, EmailField, JSONField } from 'warthog';
 import { CollectionItem } from '../collection-item/collection-item.model';
+import { AccountSettings } from '../../interfaces/account-settings';
 
 @Model()
 export class User extends BaseModel {
   @StringField()
   username!: string;
 
-  @StringField({ nullable: true })
+  @EmailField({ nullable: true })
   email?: string;
+
+  @StringField({ writeonly: true })
+  password!: string;
+
+  @StringField({ dbOnly: true })
+  salt!: string;
 
   @StringField({ nullable: true })
   bio?: string;
+
+  @JSONField({ nullable: true })
+  accountSettings?: AccountSettings;
 
   @OneToMany(
     () => CollectionItem,

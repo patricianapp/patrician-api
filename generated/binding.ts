@@ -1,3 +1,5 @@
+import 'graphql-import-node'; // Needed so you can import *.graphql files 
+
 import { makeBindingClass, Options } from 'graphql-binding'
 import { GraphQLResolveInfo, GraphQLSchema } from 'graphql'
 import { IResolvers } from 'graphql-tools/dist/Interfaces'
@@ -8,6 +10,8 @@ export interface Query {
     collectionItem: <T = CollectionItem>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     items: <T = Array<Item>>(args: { offset?: Int | null, limit?: Int | null, where?: ItemWhereInput | null, orderBy?: ItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     item: <T = Item>(args: { where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    reviews: <T = Array<Review>>(args: { offset?: Int | null, limit?: Int | null, where?: ReviewWhereInput | null, orderBy?: ReviewOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    review: <T = Review>(args: { where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     users: <T = Array<User>>(args: { offset?: Int | null, limit?: Int | null, where?: UserWhereInput | null, orderBy?: UserOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     user: <T = User>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
   }
@@ -21,6 +25,10 @@ export interface Mutation {
     createManyItems: <T = Array<Item>>(args: { data: Array<ItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateItem: <T = Item>(args: { data: ItemUpdateInput, where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteItem: <T = StandardDeleteResponse>(args: { where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    createReview: <T = Review>(args: { data: ReviewCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    createManyReviews: <T = Array<Review>>(args: { data: Array<ReviewCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    updateReview: <T = Review>(args: { data: ReviewUpdateInput, where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    deleteReview: <T = StandardDeleteResponse>(args: { where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createUser: <T = User>(args: { data: UserCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyUsers: <T = Array<User>>(args: { data: Array<UserCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateUser: <T = User>(args: { data: UserUpdateInput, where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -47,7 +55,7 @@ export interface BindingConstructor<T> {
   new(...args: any[]): T
 }
 
-export const Binding = makeBindingClass<BindingConstructor<Binding>>({ schema })
+export const Binding = makeBindingClass<BindingConstructor<Binding>>({ schema: schema as any })
 
 /**
  * Types
@@ -66,7 +74,11 @@ export type CollectionItemOrderByInput =   'createdAt_ASC' |
   'userId_ASC' |
   'userId_DESC' |
   'itemDetailsId_ASC' |
-  'itemDetailsId_DESC'
+  'itemDetailsId_DESC' |
+  'plays_ASC' |
+  'plays_DESC' |
+  'mbid_ASC' |
+  'mbid_DESC'
 
 export type ItemOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -85,7 +97,24 @@ export type ItemOrderByInput =   'createdAt_ASC' |
   'disambiguation_ASC' |
   'disambiguation_DESC' |
   'artist_ASC' |
-  'artist_DESC'
+  'artist_DESC' |
+  'coverArt_ASC' |
+  'coverArt_DESC'
+
+export type ReviewOrderByInput =   'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'deletedAt_ASC' |
+  'deletedAt_DESC' |
+  'collectionItemId_ASC' |
+  'collectionItemId_DESC' |
+  'rating_ASC' |
+  'rating_DESC' |
+  'title_ASC' |
+  'title_DESC' |
+  'body_ASC' |
+  'body_DESC'
 
 export type UserOrderByInput =   'createdAt_ASC' |
   'createdAt_DESC' |
@@ -129,6 +158,8 @@ export interface CollectionItemCreateInput {
   customArtist?: String | null
   userId: ID_Output
   itemDetailsId: ID_Output
+  plays?: Float | null
+  mbid?: String | null
 }
 
 export interface CollectionItemUpdateInput {
@@ -136,30 +167,35 @@ export interface CollectionItemUpdateInput {
   customArtist?: String | null
   userId?: ID_Input | null
   itemDetailsId?: ID_Input | null
+  plays?: Float | null
+  mbid?: String | null
 }
 
 export interface CollectionItemWhereInput {
-  id_eq?: String | null
-  id_in?: String[] | String | null
-  createdAt_eq?: String | null
-  createdAt_lt?: String | null
-  createdAt_lte?: String | null
-  createdAt_gt?: String | null
-  createdAt_gte?: String | null
-  createdById_eq?: String | null
-  updatedAt_eq?: String | null
-  updatedAt_lt?: String | null
-  updatedAt_lte?: String | null
-  updatedAt_gt?: String | null
-  updatedAt_gte?: String | null
-  updatedById_eq?: String | null
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
   deletedAt_all?: Boolean | null
-  deletedAt_eq?: String | null
-  deletedAt_lt?: String | null
-  deletedAt_lte?: String | null
-  deletedAt_gt?: String | null
-  deletedAt_gte?: String | null
-  deletedById_eq?: String | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
   customTitle_eq?: String | null
   customTitle_contains?: String | null
   customTitle_startsWith?: String | null
@@ -174,52 +210,68 @@ export interface CollectionItemWhereInput {
   userId_in?: ID_Output[] | ID_Output | null
   itemDetailsId_eq?: ID_Input | null
   itemDetailsId_in?: ID_Output[] | ID_Output | null
+  plays_eq?: Int | null
+  plays_gt?: Int | null
+  plays_gte?: Int | null
+  plays_lt?: Int | null
+  plays_lte?: Int | null
+  plays_in?: Int[] | Int | null
+  mbid_eq?: String | null
+  mbid_contains?: String | null
+  mbid_startsWith?: String | null
+  mbid_endsWith?: String | null
+  mbid_in?: String[] | String | null
 }
 
 export interface CollectionItemWhereUniqueInput {
-  id: String
+  id: ID_Output
 }
 
 export interface ItemCreateInput {
   mbid?: String | null
   rymId?: Float | null
-  spotifyId?: ID_Input | null
-  title?: String | null
+  spotifyId?: String | null
+  title: String
   disambiguation?: String | null
-  artist?: String | null
+  artist: String
+  coverArt?: String | null
 }
 
 export interface ItemUpdateInput {
   mbid?: String | null
   rymId?: Float | null
-  spotifyId?: ID_Input | null
+  spotifyId?: String | null
   title?: String | null
   disambiguation?: String | null
   artist?: String | null
+  coverArt?: String | null
 }
 
 export interface ItemWhereInput {
-  id_eq?: String | null
-  id_in?: String[] | String | null
-  createdAt_eq?: String | null
-  createdAt_lt?: String | null
-  createdAt_lte?: String | null
-  createdAt_gt?: String | null
-  createdAt_gte?: String | null
-  createdById_eq?: String | null
-  updatedAt_eq?: String | null
-  updatedAt_lt?: String | null
-  updatedAt_lte?: String | null
-  updatedAt_gt?: String | null
-  updatedAt_gte?: String | null
-  updatedById_eq?: String | null
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
   deletedAt_all?: Boolean | null
-  deletedAt_eq?: String | null
-  deletedAt_lt?: String | null
-  deletedAt_lte?: String | null
-  deletedAt_gt?: String | null
-  deletedAt_gte?: String | null
-  deletedById_eq?: String | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
   mbid_eq?: String | null
   mbid_contains?: String | null
   mbid_startsWith?: String | null
@@ -231,8 +283,11 @@ export interface ItemWhereInput {
   rymId_lt?: Int | null
   rymId_lte?: Int | null
   rymId_in?: Int[] | Int | null
-  spotifyId_eq?: ID_Input | null
-  spotifyId_in?: ID_Output[] | ID_Output | null
+  spotifyId_eq?: String | null
+  spotifyId_contains?: String | null
+  spotifyId_startsWith?: String | null
+  spotifyId_endsWith?: String | null
+  spotifyId_in?: String[] | String | null
   title_eq?: String | null
   title_contains?: String | null
   title_startsWith?: String | null
@@ -248,46 +303,120 @@ export interface ItemWhereInput {
   artist_startsWith?: String | null
   artist_endsWith?: String | null
   artist_in?: String[] | String | null
+  coverArt_eq?: String | null
+  coverArt_contains?: String | null
+  coverArt_startsWith?: String | null
+  coverArt_endsWith?: String | null
+  coverArt_in?: String[] | String | null
 }
 
 export interface ItemWhereUniqueInput {
-  id: String
+  id: ID_Output
+}
+
+export interface ReviewCreateInput {
+  collectionItemId: ID_Output
+  rating?: String | null
+  title?: String | null
+  body?: String | null
+}
+
+export interface ReviewUpdateInput {
+  collectionItemId?: ID_Input | null
+  rating?: String | null
+  title?: String | null
+  body?: String | null
+}
+
+export interface ReviewWhereInput {
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
+  deletedAt_all?: Boolean | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
+  collectionItemId_eq?: ID_Input | null
+  collectionItemId_in?: ID_Output[] | ID_Output | null
+  rating_eq?: String | null
+  rating_contains?: String | null
+  rating_startsWith?: String | null
+  rating_endsWith?: String | null
+  rating_in?: String[] | String | null
+  title_eq?: String | null
+  title_contains?: String | null
+  title_startsWith?: String | null
+  title_endsWith?: String | null
+  title_in?: String[] | String | null
+  body_eq?: String | null
+  body_contains?: String | null
+  body_startsWith?: String | null
+  body_endsWith?: String | null
+  body_in?: String[] | String | null
+}
+
+export interface ReviewWhereUniqueInput {
+  id: ID_Output
 }
 
 export interface UserCreateInput {
   username: String
   email?: String | null
+  password: String
   bio?: String | null
+  accountSettings?: JSONObject | null
 }
 
 export interface UserUpdateInput {
   username?: String | null
   email?: String | null
+  password?: String | null
   bio?: String | null
+  accountSettings?: JSONObject | null
 }
 
 export interface UserWhereInput {
-  id_eq?: String | null
-  id_in?: String[] | String | null
-  createdAt_eq?: String | null
-  createdAt_lt?: String | null
-  createdAt_lte?: String | null
-  createdAt_gt?: String | null
-  createdAt_gte?: String | null
-  createdById_eq?: String | null
-  updatedAt_eq?: String | null
-  updatedAt_lt?: String | null
-  updatedAt_lte?: String | null
-  updatedAt_gt?: String | null
-  updatedAt_gte?: String | null
-  updatedById_eq?: String | null
+  id_eq?: ID_Input | null
+  id_in?: ID_Output[] | ID_Output | null
+  createdAt_eq?: DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  createdById_eq?: ID_Input | null
+  createdById_in?: ID_Output[] | ID_Output | null
+  updatedAt_eq?: DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
+  updatedById_eq?: ID_Input | null
+  updatedById_in?: ID_Output[] | ID_Output | null
   deletedAt_all?: Boolean | null
-  deletedAt_eq?: String | null
-  deletedAt_lt?: String | null
-  deletedAt_lte?: String | null
-  deletedAt_gt?: String | null
-  deletedAt_gte?: String | null
-  deletedById_eq?: String | null
+  deletedAt_eq?: DateTime | null
+  deletedAt_lt?: DateTime | null
+  deletedAt_lte?: DateTime | null
+  deletedAt_gt?: DateTime | null
+  deletedAt_gte?: DateTime | null
+  deletedById_eq?: ID_Input | null
+  deletedById_in?: ID_Output[] | ID_Output | null
   username_eq?: String | null
   username_contains?: String | null
   username_startsWith?: String | null
@@ -303,10 +432,12 @@ export interface UserWhereInput {
   bio_startsWith?: String | null
   bio_endsWith?: String | null
   bio_in?: String[] | String | null
+  accountSettings_json?: JSONObject | null
 }
 
 export interface UserWhereUniqueInput {
-  id: String
+  id?: ID_Input | null
+  email?: String | null
 }
 
 export interface BaseGraphQLObject {
@@ -361,6 +492,13 @@ export interface CollectionItem extends BaseGraphQLObject {
   userId: String
   itemDetails?: Item | null
   itemDetailsId: String
+  plays?: Int | null
+  mbid?: String | null
+  reviews?: Array<Review> | null
+  artist: String
+  title: String
+  rating: String
+  reviewBody: String
 }
 
 export interface Item extends BaseGraphQLObject {
@@ -375,10 +513,35 @@ export interface Item extends BaseGraphQLObject {
   mbid?: String | null
   rymId?: Int | null
   spotifyId?: String | null
-  title?: String | null
+  title: String
   disambiguation?: String | null
-  artist?: String | null
+  artist: String
+  coverArt?: String | null
   collectionItem?: Array<CollectionItem> | null
+}
+
+export interface PageInfo {
+  limit: Float
+  offset: Float
+  totalCount: Float
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+}
+
+export interface Review extends BaseGraphQLObject {
+  id: ID_Output
+  createdAt: DateTime
+  createdById: String
+  updatedAt?: DateTime | null
+  updatedById?: String | null
+  deletedAt?: DateTime | null
+  deletedById?: String | null
+  version: Int
+  collectionItem?: CollectionItem | null
+  collectionItemId: String
+  rating?: String | null
+  title?: String | null
+  body?: String | null
 }
 
 export interface StandardDeleteResponse {
@@ -397,6 +560,7 @@ export interface User extends BaseGraphQLObject {
   username: String
   email?: String | null
   bio?: String | null
+  accountSettings?: JSONObject | null
   collection?: Array<CollectionItem> | null
 }
 
@@ -425,6 +589,22 @@ export type ID_Output = string
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number
+
+/*
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+*/
+
+    export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+
+    export type JsonPrimitive = string | number | boolean | null | {};
+    
+        // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface JsonArray extends Array<JsonValue> {}
+    
+    export type JsonObject = { [member: string]: JsonValue };
+
+    export type JSONObject = JsonObject;
+  
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
