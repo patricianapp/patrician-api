@@ -4,7 +4,7 @@ import { AccountSettings } from '../../interfaces/account-settings';
 
 @Model()
 export class User extends BaseModel {
-  @StringField()
+  @StringField({ unique: true })
   username!: string;
 
   @EmailField({ nullable: true })
