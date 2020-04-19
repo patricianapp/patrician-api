@@ -23,13 +23,13 @@ export function getServer(AppOptions = {}, dbOptions = {}) {
         return {
           user: {
             id: `user:${userId}`,
-            permissions: ['signedIn']
-          }
+            permissions: ['signedIn'],
+          },
         };
       },
       introspection: true,
       logger: Logger,
-      ...AppOptions
+      ...AppOptions,
     },
     dbOptions
   );

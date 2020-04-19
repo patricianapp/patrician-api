@@ -29,7 +29,9 @@ export class Logger {
 
   // This takes a raw GraphQL error and pulls out the relevant info
   static logGraphQLError(error: Error) {
-    console.error(util.inspect(getBindingError(error), { showHidden: false, depth: null }));
+    console.error(
+      util.inspect(getBindingError(error), { showHidden: false, depth: null })
+    );
   }
 }
 /* eslint-enable no-console */

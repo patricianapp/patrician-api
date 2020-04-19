@@ -1,4 +1,13 @@
-import { Arg, Args, Mutation, Query, Resolver, FieldResolver, Root, Ctx  } from 'type-graphql';
+import {
+  Arg,
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  FieldResolver,
+  Root,
+  Ctx,
+} from 'type-graphql';
 import { Inject } from 'typedi';
 import { Fields, StandardDeleteResponse, UserId, BaseContext } from 'warthog';
 
@@ -8,7 +17,7 @@ import {
   CollectionItemUpdateArgs,
   CollectionItemWhereArgs,
   CollectionItemWhereInput,
-  CollectionItemWhereUniqueInput
+  CollectionItemWhereUniqueInput,
 } from '../../../generated';
 
 import { CollectionItem } from './collection-item.model';
@@ -18,7 +27,10 @@ import { Item } from '../item/item.model';
 
 @Resolver(CollectionItem)
 export class CollectionItemResolver {
-  constructor(@Inject('CollectionItemService') public readonly service: CollectionItemService) {}
+  constructor(
+    @Inject('CollectionItemService')
+    public readonly service: CollectionItemService
+  ) {}
 
   @Query(() => [CollectionItem])
   async collectionItems(
@@ -37,14 +49,24 @@ export class CollectionItemResolver {
   }
 
   @FieldResolver(() => String)
-  async artist(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<string> {
-    let itemDetails = await ctx.dataLoader.loaders.CollectionItem.itemDetails.load(collectionItem);
+  async artist(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<string> {
+    let itemDetails = await ctx.dataLoader.loaders.CollectionItem.itemDetails.load(
+      collectionItem
+    );
     return itemDetails.artist;
   }
 
   @FieldResolver(() => String)
-  async title(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<string> {
-    let itemDetails = await ctx.dataLoader.loaders.CollectionItem.itemDetails.load(collectionItem);
+  async title(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<string> {
+    let itemDetails = await ctx.dataLoader.loaders.CollectionItem.itemDetails.load(
+      collectionItem
+    );
     return itemDetails.title;
   }
 
@@ -61,35 +83,49 @@ export class CollectionItemResolver {
   // }
 
   @FieldResolver(() => String)
-  async rating(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<string> {
-    let reviews = await ctx.dataLoader.loaders.CollectionItem.reviews.load(collectionItem);
-    if(reviews.length > 0) {
-      return reviews[reviews.length-1].rating;
-    }
-    else {
+  async rating(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<string> {
+    let reviews = await ctx.dataLoader.loaders.CollectionItem.reviews.load(
+      collectionItem
+    );
+    if (reviews.length > 0) {
+      return reviews[reviews.length - 1].rating;
+    } else {
       return '';
     }
   }
 
   @FieldResolver(() => String)
-  async reviewBody(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<string> {
+  async reviewBody(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<string> {
     // TODO: Only loas the most recent review
-    let reviews = await ctx.dataLoader.loaders.CollectionItem.reviews.load(collectionItem);
-    if(reviews.length > 0) {
-      return reviews[reviews.length-1].body;
-    }
-    else {
+    let reviews = await ctx.dataLoader.loaders.CollectionItem.reviews.load(
+      collectionItem
+    );
+    if (reviews.length > 0) {
+      return reviews[reviews.length - 1].body;
+    } else {
       return '';
     }
   }
 
   @FieldResolver(() => [Item])
-  itemDetails(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<Item[]> {
+  itemDetails(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<Item[]> {
     return ctx.dataLoader.loaders.CollectionItem.itemDetails.load(collectionItem);
   }
 
   @FieldResolver(() => [Item])
-  reviews(@Root() collectionItem: CollectionItem, @Ctx() ctx: BaseContext): Promise<Item[]> {
+  reviews(
+    @Root() collectionItem: CollectionItem,
+    @Ctx() ctx: BaseContext
+  ): Promise<Item[]> {
     return ctx.dataLoader.loaders.CollectionItem.reviews.load(collectionItem);
   }
 

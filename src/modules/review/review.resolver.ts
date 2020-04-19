@@ -8,7 +8,7 @@ import {
   ReviewUpdateArgs,
   ReviewWhereArgs,
   ReviewWhereInput,
-  ReviewWhereUniqueInput
+  ReviewWhereUniqueInput,
 } from '../../../generated';
 
 import { Review } from './review.model';

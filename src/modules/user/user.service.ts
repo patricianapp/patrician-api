@@ -22,7 +22,7 @@ export class UserService extends BaseService<User> {
       ...user,
       salt,
       collection,
-    }
+    };
 
     return super.create(payload, userId);
   }

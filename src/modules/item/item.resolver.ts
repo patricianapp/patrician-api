@@ -8,7 +8,7 @@ import {
   ItemUpdateArgs,
   ItemWhereArgs,
   ItemWhereInput,
-  ItemWhereUniqueInput
+  ItemWhereUniqueInput,
 } from '../../../generated';
 
 import { Item } from './item.model';
@@ -32,7 +32,10 @@ export class ItemResolver {
   }
 
   @Mutation(() => Item)
-  async createItem(@Arg('data') data: ItemCreateInput, @UserId() userId: string): Promise<Item> {
+  async createItem(
+    @Arg('data') data: ItemCreateInput,
+    @UserId() userId: string
+  ): Promise<Item> {
     return this.service.create(data, userId);
   }
 

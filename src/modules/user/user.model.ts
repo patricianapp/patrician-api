@@ -27,4 +27,4 @@ export class User extends BaseModel {
     (collectionItem: CollectionItem) => collectionItem.user
   )
   collection?: CollectionItem[];
-  }
+}

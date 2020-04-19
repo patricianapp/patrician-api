@@ -11,20 +11,14 @@ export class CollectionItem extends BaseModel {
   @StringField({ nullable: true })
   customArtist?: string;
 
-  @ManyToOne(
-    () => User,
-    (user: User) => user.collection
-  )
+  @ManyToOne(() => User, (user: User) => user.collection)
   user!: User;
 
-  @ManyToOne(
-    () => Item,
-    (item: Item) => item.collectionItem
-  )
+  @ManyToOne(() => Item, (item: Item) => item.collectionItem)
   itemDetails!: Item;
 
   @IntField({ nullable: true, default: 0 })
-  plays?: number
+  plays?: number;
 
   // needs to be nullable for writes
   // FIXME: This is calling the database even though apiOnly is true
@@ -47,10 +41,7 @@ export class CollectionItem extends BaseModel {
     return this.itemDetails.mbid;
   }
 
-  @OneToMany(
-    () => Review,
-    (review: Review) => review.collectionItem
-  )
+  @OneToMany(() => Review, (review: Review) => review.collectionItem)
   reviews?: Review[];
 
   // FIXME: warthog codegen fails when using optional chaining
