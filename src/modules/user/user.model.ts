@@ -7,6 +7,10 @@ export class User extends BaseModel {
 	@StringField({ unique: true })
 	username!: string;
 
+	getId() {
+		return this.username;
+	}
+
 	@EmailField({ nullable: true })
 	email?: string;
 
