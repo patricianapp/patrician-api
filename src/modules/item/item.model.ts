@@ -3,30 +3,30 @@ import { CollectionItem } from '../collection-item/collection-item.model';
 
 @Model()
 export class Item extends BaseModel {
-  @StringField({ nullable: true })
-  mbid?: string;
+	@StringField({ nullable: true })
+	mbid?: string;
 
-  @IntField({ nullable: true })
-  rymId?: number;
+	@IntField({ nullable: true })
+	rymId?: number;
 
-  @StringField({ nullable: true })
-  spotifyId?: string;
+	@StringField({ nullable: true })
+	spotifyId?: string;
 
-  @StringField()
-  title!: string;
+	@StringField()
+	title!: string;
 
-  @StringField({ nullable: true })
-  disambiguation?: string;
+	@StringField({ nullable: true })
+	disambiguation?: string;
 
-  @StringField()
-  artist!: string;
+	@StringField()
+	artist!: string;
 
-  @StringField({ nullable: true })
-  coverArt?: string;
+	@StringField({ nullable: true })
+	coverArt?: string;
 
-  @OneToMany(
-    () => CollectionItem,
-    (collectionItem: CollectionItem) => collectionItem.itemDetails
-  )
-  collectionItem?: CollectionItem[];
+	@OneToMany(
+		() => CollectionItem,
+		(collectionItem: CollectionItem) => collectionItem.itemDetails
+	)
+	collectionItem?: CollectionItem[];
 }
