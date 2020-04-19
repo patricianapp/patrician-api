@@ -7,7 +7,7 @@ import { Item } from './item.model';
 
 @Service('ItemService')
 export class ItemService extends BaseService<Item> {
-  constructor(@InjectRepository(Item) protected readonly repository: Repository<Item>) {
-    super(Item, repository);
-  }
+	constructor(@InjectRepository(Item) protected readonly repository: Repository<Item>) {
+		super(Item, repository);
+	}
 }

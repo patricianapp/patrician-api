@@ -4,27 +4,27 @@ import { AccountSettings } from '../../interfaces/account-settings';
 
 @Model()
 export class User extends BaseModel {
-  @StringField({ unique: true })
-  username!: string;
+	@StringField({ unique: true })
+	username!: string;
 
-  @EmailField({ nullable: true })
-  email?: string;
+	@EmailField({ nullable: true })
+	email?: string;
 
-  @StringField({ writeonly: true })
-  password!: string;
+	@StringField({ writeonly: true })
+	password!: string;
 
-  @StringField({ dbOnly: true })
-  salt!: string;
+	@StringField({ dbOnly: true })
+	salt!: string;
 
-  @StringField({ nullable: true })
-  bio?: string;
+	@StringField({ nullable: true })
+	bio?: string;
 
-  @JSONField({ nullable: true })
-  accountSettings?: AccountSettings;
+	@JSONField({ nullable: true })
+	accountSettings?: AccountSettings;
 
-  @OneToMany(
-    () => CollectionItem,
-    (collectionItem: CollectionItem) => collectionItem.user
-  )
-  collection?: CollectionItem[];
+	@OneToMany(
+		() => CollectionItem,
+		(collectionItem: CollectionItem) => collectionItem.user
+	)
+	collection?: CollectionItem[];
 }

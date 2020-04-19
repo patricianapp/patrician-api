@@ -7,12 +7,12 @@ import { CollectionItem } from './collection-item.model';
 
 @Service('CollectionItemService')
 export class CollectionItemService extends BaseService<CollectionItem> {
-  constructor(
-    @InjectRepository(CollectionItem)
-    protected readonly repository: Repository<CollectionItem>
-  ) {
-    super(CollectionItem, repository);
-  }
+	constructor(
+		@InjectRepository(CollectionItem)
+		protected readonly repository: Repository<CollectionItem>
+	) {
+		super(CollectionItem, repository);
+	}
 
-  async getWithItemDetails() {}
+	async getWithItemDetails() {}
 }

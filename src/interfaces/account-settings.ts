@@ -1,3 +1,3 @@
 export interface AccountSettings {
-  itemsPerPage: number;
+	itemsPerPage: number;
 }
