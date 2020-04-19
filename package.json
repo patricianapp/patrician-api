@@ -38,23 +38,16 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && tsc -p ./tsconfig.json && yarn test"
+      "pre-commit": "lint-staged && tsc -p ./tsconfig.json"
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.ts": [
-        "eslint --fix",
-        "prettier --write",
-        "git add"
-      ],
-      "*.{js,json}": [
-        "prettier --write",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "**/generated/*"
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,json}": [
+      "prettier --write"
     ]
   },
   "dependencies": {
