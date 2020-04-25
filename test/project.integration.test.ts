@@ -8,22 +8,25 @@ import 'reflect-metadata';
 import { GraphQLError } from 'graphql';
 import { getBindingError } from 'warthog';
 
-// TODO: If we create an integration test harness, we could make app a global and also load dotenv as part of the setup.
 // Needs to happen before you import any models
 import { Binding } from '../generated/binding';
 import { loadConfig } from '../src/config';
 import { getServer } from '../src/server';
 
+import { UserCreateInput } from '../generated';
+import { User } from '../src/modules/user/user.model';
+
 let binding: Binding;
 
 let server: any;
 
+// TODO: find out the difference between beforeAll and globalSetup
 beforeAll(async (done) => {
 	// process.env.DEBUG = undefined;
 
 	loadConfig();
 
-	server = getServer({ mockDBConnection: true }, { logging: false });
+	server = getServer({}, { logging: false });
 	await server.start();
 
 	binding = ((await server.getBinding()) as unknown) as Binding;
@@ -34,6 +37,48 @@ beforeAll(async (done) => {
 afterAll(async (done) => {
 	await server.stop();
 	done();
+});
+
+// Add tests only to queries/mutations that are finalized
+// and ready to be consumed by the UI
+describe('User', () => {
+	test('sign up should work with valid credentials', async (done) => {
+		let response: GraphQLError | object = new GraphQLError('');
+
+		// golden path
+		response = await signUpUser({
+			username: 'elias',
+			email: 'email@gmail.com',
+			password: 'password',
+		});
+		// expect(response).not.toBeInstanceOf(GraphQLError);
+		expect(response).toMatchObject(new User());
+		expect((response as User).id).toEqual('elias');
+
+		done();
+		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
+	});
+
+	test('duplicate usernames are not allowed', async (done) => {
+		let response: GraphQLError | object = new GraphQLError('');
+		response = await signUpUser({
+			username: 'elias',
+			email: 'email2@gmail.com',
+			password: 'password2',
+		});
+		console.log(response);
+		// expect(response).toBeInstanceOf(GraphQLError);
+		expect((response as GraphQLFixedError).message).toContain(
+			'duplicate key value violates unique constraint'
+		);
+		done();
+	});
+
+	test('log in should work with valid credentials', async (done) => {
+		throw new Error('Not implemented yet');
+	});
+	// test('duplicate usernames are not allowed');
+	// test('duplicate usernames are not allowed');
 });
 
 describe('Project', () => {
@@ -85,6 +130,17 @@ interface GraphQLFixedError {
 			[key: string]: string;
 		};
 	};
+}
+
+async function signUpUser(data: UserCreateInput) {
+	let user: User;
+	try {
+		user = await binding.mutation.createUser({ data });
+	} catch (e) {
+		return Promise.resolve(getBindingError(e));
+	}
+
+	return user;
 }
 
 // async function createProject(key: string): Promise<object | GraphQLFixedError> {
