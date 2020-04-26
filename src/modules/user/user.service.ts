@@ -38,4 +38,14 @@ export class UserService extends BaseService<User> {
 	//     return 'user not found';
 	//   }
 	// }
+
+	async hardDelete(id: string): Promise<string> {
+		const user = await this.repository.findOne(id);
+		if (user) {
+			await this.repository.remove(user);
+			return Promise.resolve(`User ${id} deleted.`);
+		} else {
+			return Promise.resolve('User not found'); // TODO: Make this an error
+		}
+	}
 }

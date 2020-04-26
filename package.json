@@ -6,7 +6,8 @@
 	"author": "Patrician Team",
 	"scripts": {
 		"bootstrap": "yarn bootstrap:dev",
-		"bootstrap:dev": "yarn && yarn build:dev && yarn db:drop && yarn db:create && yarn db:migrate && yarn db:seed",
+		"bootstrap:dev": "yarn && yarn build:dev && yarn db:drop && yarn db:create && yarn db:migrate",
+		"bootstrap:test": "WARTHOG_DB_DATABASE=patrician-api-test yarn db:create && WARTHOG_DB_DATABASE=patrician-api-test yarn db:migrate",
 		"bootstrap:prod": "yarn && yarn build:prod && yarn start:prod",
 		"//": "This is the default command run in CI, so it should point to Prod and also create Prod config",
 		"build": "yarn build:prod",
@@ -33,12 +34,12 @@
 		"start:dev": "ts-node-dev --type-check src/index.ts",
 		"start:dev:watch": "nodemon -e ts,graphql -x ts-node --type-check src/index.ts",
 		"start:prod": "WARTHOG_ENV=production yarn dotenv:generate && node dist/src/index.js",
-		"test": "DEBUG= jest --verbose --coverage",
-		"test:watch": "DEBUG= jest --watch"
+		"test": "WARTHOG_DB_DATABASE=patrician-api-test DEBUG= jest --verbose --coverage",
+		"test:watch": "WARTHOG_DB_DATABASE=patrician-api-test DEBUG= jest --watch"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && tsc -p ./tsconfig.json"
+			"pre-commit": "lint-staged && tsc -p ./tsconfig.json && yarn test"
 		}
 	},
 	"lint-staged": {

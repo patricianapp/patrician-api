@@ -183,6 +183,9 @@ export class UserWhereUniqueInput {
   id?: string;
 
   @TypeGraphQLField(() => String, { nullable: true })
+  username?: string;
+
+  @TypeGraphQLField(() => String, { nullable: true })
   email?: string;
 }
 

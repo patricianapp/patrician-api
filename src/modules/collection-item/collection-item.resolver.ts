@@ -102,7 +102,7 @@ export class CollectionItemResolver {
 		@Root() collectionItem: CollectionItem,
 		@Ctx() ctx: BaseContext
 	): Promise<string> {
-		// TODO: Only loas the most recent review
+		// TODO: Only load the most recent review
 		let reviews = await ctx.dataLoader.loaders.CollectionItem.reviews.load(
 			collectionItem
 		);

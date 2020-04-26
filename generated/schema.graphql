@@ -334,6 +334,7 @@ type Mutation {
   createManyUsers(data: [UserCreateInput!]!): [User!]!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   deleteUser(where: UserWhereUniqueInput!): StandardDeleteResponse!
+  hardDeleteUser(id: String!): String!
 }
 
 type PageInfo {
@@ -546,5 +547,6 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  username: String
   email: String
 }

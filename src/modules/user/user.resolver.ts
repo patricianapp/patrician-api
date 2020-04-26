@@ -43,7 +43,12 @@ export class UserResolver {
 	}
 
 	@FieldResolver(() => [CollectionItem])
-	collection(@Root() user: User, @Ctx() ctx: BaseContext): Promise<CollectionItem[]> {
+	collection(
+		@Root() user: User,
+		@Ctx() ctx: BaseContext,
+		@Arg('query') query: string
+	): Promise<CollectionItem[]> {
+		query; // TODO: filter by search query
 		return ctx.dataLoader.loaders.User.collection.load(user);
 	}
 
@@ -78,5 +83,11 @@ export class UserResolver {
 		@UserId() userId: string
 	): Promise<StandardDeleteResponse> {
 		return this.service.delete(where, userId);
+	}
+
+	@Mutation(() => String)
+	async hardDeleteUser(@Arg('id') id: string) {
+		// TODO: Use 'where' input
+		return this.service.hardDelete(id);
 	}
 }
