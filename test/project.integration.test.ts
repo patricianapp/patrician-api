@@ -15,7 +15,6 @@ import { getServer } from '../src/server';
 
 import { UserCreateInput } from '../generated';
 import { User } from '../src/modules/user/user.model';
-import { UserService } from '../src/modules/user/user.service';
 
 let binding: Binding;
 
@@ -79,7 +78,7 @@ describe('User', () => {
 		expect((response as User).id).toEqual(testData.user.username);
 
 		// This currently fails because the generated binding does not include field resolvers:
-		// expect((response as User).collection).toBeInstanceOf(Array);
+		expect((response as User).collection).toBeInstanceOf(Array);
 
 		// TODO: once we have a proper mutation for adding items,
 		// we will write a test that adds an item and then ensure that it exists here
@@ -128,7 +127,16 @@ async function signUpUser(data: UserCreateInput) {
 
 async function getUser(userId: string): Promise<User | GraphQLError> {
 	try {
-		return binding.query.user({ where: { id: userId } });
+		return binding.query.user(
+			{ where: { id: userId } },
+			`
+		{
+			id
+			collection(query: "") {
+				id
+			}
+		}`
+		);
 	} catch (e) {
 		return getBindingError(e);
 	}
