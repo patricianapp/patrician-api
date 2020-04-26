@@ -39,6 +39,14 @@ afterAll(async (done) => {
 	done();
 });
 
+const testData = {
+	user: {
+		username: 'elias',
+		email: 'email@gmail.com',
+		password: 'password',
+	},
+};
+
 // Add tests only to queries/mutations that are finalized
 // and ready to be consumed by the UI
 describe('User', () => {
@@ -46,15 +54,11 @@ describe('User', () => {
 		// let response: GraphQLError | object = new GraphQLError('');
 
 		// golden path
-		let response = await signUpUser({
-			username: 'elias',
-			email: 'email@gmail.com',
-			password: 'password',
-		});
+		let response = await signUpUser(testData.user);
 
 		// expect(response).toBeInstanceOf(User); // FIXME: Not sure why this doesn't work
 		expect((response as GraphQLError).message).toBeUndefined();
-		expect((response as User).id).toEqual('elias');
+		expect((response as User).id).toEqual(testData.user.username);
 
 		done();
 		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
@@ -62,22 +66,30 @@ describe('User', () => {
 
 	test('duplicate usernames are not allowed', async (done) => {
 		let response: GraphQLError | object = new GraphQLError('');
-		response = await signUpUser({
-			username: 'elias',
-			email: 'email2@gmail.com',
-			password: 'password2',
-		});
-		console.log(response);
-		// expect(response).toBeInstanceOf(GraphQLError); // FIXME: Not sure why this doesn't work
+		response = await signUpUser(testData.user);
+		// expect(response).toBeInstanceOf(GraphQLError);
 		expect((response as GraphQLFixedError).message).toContain(
 			'duplicate key value violates unique constraint'
 		);
 		done();
 	});
 
+	test("retrieve user's collection", async (done) => {
+		let response = await getUser(testData.user.username);
+		expect((response as User).id).toEqual(testData.user.username);
+
+		// This currently fails because the generated binding does not include field resolvers:
+		// expect((response as User).collection).toBeInstanceOf(Array);
+
+		// TODO: once we have a proper mutation for adding items,
+		// we will write a test that adds an item and then ensure that it exists here
+
+		done();
+	});
+
 	test('delete test user', async (done) => {
 		let response = await deleteTestUser();
-		expect(response).toContain('elias');
+		expect(response).toContain(testData.user.username);
 		done();
 	});
 
@@ -148,6 +160,14 @@ async function signUpUser(data: UserCreateInput) {
 	}
 
 	return user;
+}
+
+async function getUser(userId: string): Promise<User | GraphQLError> {
+	try {
+		return binding.query.user({ where: { id: userId } });
+	} catch (e) {
+		return getBindingError(e);
+	}
 }
 
 async function deleteTestUser(): Promise<StandardDeleteResponse | GraphQLError> {
