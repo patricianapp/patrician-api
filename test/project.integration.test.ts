@@ -100,42 +100,6 @@ describe('User', () => {
 	// test('duplicate usernames are not allowed');
 });
 
-describe('Project', () => {
-	test('key format', async (done) => {
-		let response: GraphQLError | object = new GraphQLError('');
-
-		// Note: this test can also surface if you have 2 separate versions of GraphQL installed (which is bad)
-		// response = await createProject('');
-		// expect((response as GraphQLFixedError).message).toContain('Argument Validation Error');
-		// expect((response as GraphQLFixedError).validationErrors.key.minLength).toContain(
-		//   'key must be longer'
-		// );
-
-		// response = await createProject('aaa-');
-		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
-
-		// response = await createProject('-aaa');
-		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
-
-		// response = await createProject('a--a');
-		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
-
-		// response = await createProject('AAA');
-		// expect((response as GraphQLError).message).toContain('Argument Validation Error');
-
-		// response = await createProject('aa');
-		// expect(response).not.toBeInstanceOf(GraphQLError);
-
-		// response = await createProject('a-b');
-		// expect(response).not.toBeInstanceOf(GraphQLError);
-
-		// response = await createProject('foo-bar-bazzzzzzzzzzzzzzz');
-		// expect(response).not.toBeInstanceOf(GraphQLError);
-
-		done();
-	});
-});
-
 interface GraphQLFixedError {
 	message: string;
 	location: object[];
