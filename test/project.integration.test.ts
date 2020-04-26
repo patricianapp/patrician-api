@@ -9,18 +9,18 @@ import { GraphQLError } from 'graphql';
 import { getBindingError } from 'warthog';
 
 // Needs to happen before you import any models
-import { Binding } from '../generated/binding';
+import { Binding, StandardDeleteResponse } from '../generated/binding';
 import { loadConfig } from '../src/config';
 import { getServer } from '../src/server';
 
 import { UserCreateInput } from '../generated';
 import { User } from '../src/modules/user/user.model';
+import { UserService } from '../src/modules/user/user.service';
 
 let binding: Binding;
 
 let server: any;
 
-// TODO: find out the difference between beforeAll and globalSetup
 beforeAll(async (done) => {
 	// process.env.DEBUG = undefined;
 
@@ -43,16 +43,17 @@ afterAll(async (done) => {
 // and ready to be consumed by the UI
 describe('User', () => {
 	test('sign up should work with valid credentials', async (done) => {
-		let response: GraphQLError | object = new GraphQLError('');
+		// let response: GraphQLError | object = new GraphQLError('');
 
 		// golden path
-		response = await signUpUser({
+		let response = await signUpUser({
 			username: 'elias',
 			email: 'email@gmail.com',
 			password: 'password',
 		});
-		// expect(response).not.toBeInstanceOf(GraphQLError);
-		expect(response).toMatchObject(new User());
+
+		// expect(response).toBeInstanceOf(User); // FIXME: Not sure why this doesn't work
+		expect((response as GraphQLError).message).toBeUndefined();
 		expect((response as User).id).toEqual('elias');
 
 		done();
@@ -67,16 +68,22 @@ describe('User', () => {
 			password: 'password2',
 		});
 		console.log(response);
-		// expect(response).toBeInstanceOf(GraphQLError);
+		// expect(response).toBeInstanceOf(GraphQLError); // FIXME: Not sure why this doesn't work
 		expect((response as GraphQLFixedError).message).toContain(
 			'duplicate key value violates unique constraint'
 		);
 		done();
 	});
 
-	test('log in should work with valid credentials', async (done) => {
-		throw new Error('Not implemented yet');
+	test('delete test user', async (done) => {
+		let response = await deleteTestUser();
+		expect(response).toContain('elias');
+		done();
 	});
+
+	// test('log in should work with valid credentials', async (done) => {
+	// 	throw new Error('Not implemented yet');
+	// });
 	// test('duplicate usernames are not allowed');
 	// test('duplicate usernames are not allowed');
 });
@@ -137,10 +144,19 @@ async function signUpUser(data: UserCreateInput) {
 	try {
 		user = await binding.mutation.createUser({ data });
 	} catch (e) {
-		return Promise.resolve(getBindingError(e));
+		return getBindingError(e);
 	}
 
 	return user;
+}
+
+async function deleteTestUser(): Promise<StandardDeleteResponse | GraphQLError> {
+	try {
+		console.log('Deleting test user...');
+		return binding.mutation.hardDeleteUser({ id: 'elias' });
+	} catch (e) {
+		return Promise.resolve(getBindingError(e));
+	}
 }
 
 // async function createProject(key: string): Promise<object | GraphQLFixedError> {

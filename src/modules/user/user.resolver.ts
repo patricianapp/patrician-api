@@ -79,4 +79,10 @@ export class UserResolver {
 	): Promise<StandardDeleteResponse> {
 		return this.service.delete(where, userId);
 	}
+
+	@Mutation(() => String)
+	async hardDeleteUser(@Arg('id') id: string) {
+		// TODO: Use 'where' input
+		return this.service.hardDelete(id);
+	}
 }
