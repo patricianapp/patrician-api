@@ -46,7 +46,7 @@ export class UserResolver {
 	collection(
 		@Root() user: User,
 		@Ctx() ctx: BaseContext,
-		@Arg('query') query: string
+		@Arg('query', { nullable: true }) query: string
 	): Promise<CollectionItem[]> {
 		query; // TODO: filter by search query
 		return ctx.dataLoader.loaders.User.collection.load(user);
