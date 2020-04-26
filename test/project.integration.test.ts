@@ -142,24 +142,3 @@ async function deleteTestUser(): Promise<StandardDeleteResponse | GraphQLError> 
 		return Promise.resolve(getBindingError(e));
 	}
 }
-
-// async function createProject(key: string): Promise<object | GraphQLFixedError> {
-//   let project;
-//   try {
-//     project = await binding.mutation.createProject(
-//       {
-//         data: {
-//           key,
-//           name: 'Fake name',
-//         },
-//       },
-//       `{ id name key }`
-//     );
-//   } catch (e) {
-//     return Promise.resolve(getBindingError(e));
-//   }
-
-//   return project;
-// }
-
-/* eslint-enable no-console */
