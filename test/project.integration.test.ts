@@ -77,7 +77,6 @@ describe('User', () => {
 		let response = await getUser(testData.user.username);
 		expect((response as User).id).toEqual(testData.user.username);
 
-		// This currently fails because the generated binding does not include field resolvers:
 		expect((response as User).collection).toBeInstanceOf(Array);
 
 		// TODO: once we have a proper mutation for adding items,
