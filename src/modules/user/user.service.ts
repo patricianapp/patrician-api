@@ -28,7 +28,7 @@ export class UserService extends BaseService<User> {
 		return super.create(payload, userId);
 	}
 
-	async login(authCredentialsInput: {
+	async getAuthToken(authCredentialsInput: {
 		username: string;
 		password: string;
 	}): Promise<string> {
@@ -36,7 +36,7 @@ export class UserService extends BaseService<User> {
 		const user = await this.findOne({ username });
 
 		if (user && user.password === (await bcrypt.hash(password, user.salt))) {
-			return jwt.sign({ username }, process.env.JWT_SECRET as string);
+			return jwt.sign({ username }, process.env.JWT_SECRET as string); // TODO: Expiration
 		} else {
 			return 'user not found';
 		}

@@ -42,6 +42,12 @@ export class UserResolver {
 		return this.service.findOne<UserWhereUniqueInput>(where);
 	}
 
+	@Authorized('signedIn')
+	@Query(() => User)
+	async viewer(@Ctx() ctx: BaseContext): Promise<User> {
+		return this.service.findOne<UserWhereUniqueInput>({ id: ctx.user.id });
+	}
+
 	@FieldResolver(() => [CollectionItem])
 	collection(
 		@Root() user: User,
@@ -61,13 +67,13 @@ export class UserResolver {
 	}
 
 	@Mutation(() => String)
-	async login(
+	async getAuthToken(
 		@Arg('username') username: string,
 		@Arg('password') password: string,
 		@UserId() userId: string
 	): Promise<string> {
 		// TODO: Create login payload type
-		return this.service.login({ username, password });
+		return this.service.getAuthToken({ username, password });
 	}
 
 	@Mutation(() => [User])

@@ -331,6 +331,7 @@ type Mutation {
   updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review!
   deleteReview(where: ReviewWhereUniqueInput!): StandardDeleteResponse!
   createUser(data: UserCreateInput!): User!
+  getAuthToken(password: String!, username: String!): String!
   createManyUsers(data: [UserCreateInput!]!): [User!]!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   deleteUser(where: UserWhereUniqueInput!): StandardDeleteResponse!
@@ -354,6 +355,7 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review!
   users(offset: Int, limit: Int = 50, where: UserWhereInput, orderBy: UserOrderByInput): [User!]!
   user(where: UserWhereUniqueInput!): User!
+  viewer: User!
 }
 
 type Review implements BaseGraphQLObject {
