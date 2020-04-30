@@ -113,6 +113,7 @@ interface GraphQLFixedError {
 	};
 }
 
+// TODO: Figure out how to add auth headers to these function calls
 async function signUpUser(data: UserCreateInput) {
 	let user: User;
 	try {

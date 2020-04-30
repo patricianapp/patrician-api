@@ -14,7 +14,7 @@ export class UserService extends BaseService<User> {
 		super(User, repository);
 	}
 
-	async create(user: UserCreateInput, userId: string) {
+	async create(user: UserCreateInput) {
 		const salt = await bcrypt.genSalt();
 		user.password = await bcrypt.hash(user.password, salt);
 		const collection: CollectionItem[] = [];
@@ -25,7 +25,7 @@ export class UserService extends BaseService<User> {
 			collection,
 		};
 
-		return super.create(payload, userId);
+		return super.create(payload, user.username);
 	}
 
 	async getAuthToken(authCredentialsInput: {
