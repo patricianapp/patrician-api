@@ -34,7 +34,7 @@ beforeAll(async (done) => {
 });
 
 afterAll(async (done) => {
-	await server.stop();
+	server.stop();
 	done();
 });
 

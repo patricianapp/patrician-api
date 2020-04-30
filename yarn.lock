@@ -6993,10 +6993,10 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-warthog@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/warthog/-/warthog-2.6.0.tgz#cad6373a226b36a695f01a409ce345f570d11710"
-  integrity sha512-I0n+8+FULUqO464FVgfC8wLgqffsINWZ/4NNjBtbGG2whdn0vWOrg+FwyM+haY5jnncG3jtJ3Q4j1PrfH7xGiQ==
+warthog@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/warthog/-/warthog-2.9.1.tgz#e662db6adae2968a4fedd527300ba0736103eb20"
+  integrity sha512-dMMgdN0v2xWtl7mD/L9dTTBW0WgCFaidZJYmqlGAL2F9XIbvYffdr43K02oNP6E5LlnPB9xuF9Pa26OzByh41A==
   dependencies:
     "@types/app-root-path" "^1.2.4"
     "@types/caller" "^1.0.0"

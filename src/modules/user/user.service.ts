@@ -27,17 +27,19 @@ export class UserService extends BaseService<User> {
 		return super.create(payload, userId);
 	}
 
-	// TODO: Sign in
-	// async validateUserPassword(authCredentialsInput: UserCreateInput): Promise<string> {
-	//   const { username, password } = authCredentialsInput;
-	//   const user = await this.findOne({username});
+	async login(authCredentialsInput: {
+		username: string;
+		password: string;
+	}): Promise<string> {
+		const { username, password } = authCredentialsInput;
+		const user = await this.findOne({ username });
 
-	//   if (user && user.password === bcrypt.hash(user.password, user.salt)) {
-	//     return user.username;
-	//   } else {
-	//     return 'user not found';
-	//   }
-	// }
+		if (user && user.password === (await bcrypt.hash(password, user.salt))) {
+			return user.username; // TODO: Return JWT
+		} else {
+			return 'user not found';
+		}
+	}
 
 	async hardDelete(id: string): Promise<string> {
 		const user = await this.repository.findOne(id);

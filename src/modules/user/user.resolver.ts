@@ -52,13 +52,21 @@ export class UserResolver {
 		return ctx.dataLoader.loaders.User.collection.load(user);
 	}
 
-	@Authorized('signedIn')
 	@Mutation(() => User)
 	async createUser(
 		@Arg('data') data: UserCreateInput,
 		@UserId() userId: string
 	): Promise<User> {
 		return this.service.create(data, userId);
+	}
+
+	@Mutation(() => String)
+	async login(
+		@Arg('username') username: string,
+		@Arg('password') password: string,
+		@UserId() userId: string
+	): Promise<string> {
+		return this.service.login({ username, password });
 	}
 
 	@Mutation(() => [User])
@@ -69,6 +77,7 @@ export class UserResolver {
 		return this.service.createMany(data, userId);
 	}
 
+	@Authorized('signedIn')
 	@Mutation(() => User)
 	async updateUser(
 		@Args() { data, where }: UserUpdateArgs,
