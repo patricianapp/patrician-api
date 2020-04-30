@@ -66,6 +66,7 @@ export class UserResolver {
 		@Arg('password') password: string,
 		@UserId() userId: string
 	): Promise<string> {
+		// TODO: Create login payload type
 		return this.service.login({ username, password });
 	}
 

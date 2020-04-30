@@ -1,8 +1,9 @@
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { BaseService } from 'warthog';
-import * as bcrypt from 'bcrypt';
 import { User } from './user.model';
 import { UserCreateInput } from '../../../generated';
 import { CollectionItem } from '../collection-item/collection-item.model';
@@ -35,7 +36,7 @@ export class UserService extends BaseService<User> {
 		const user = await this.findOne({ username });
 
 		if (user && user.password === (await bcrypt.hash(password, user.salt))) {
-			return user.username; // TODO: Return JWT
+			return jwt.sign({ username }, process.env.JWT_SECRET as string);
 		} else {
 			return 'user not found';
 		}
