@@ -24,6 +24,7 @@ import { CollectionItem } from './collection-item.model';
 import { CollectionItemService } from './collection-item.service';
 import { User } from '../user/user.model';
 import { Item } from '../item/item.model';
+import { CollectionAddInput, CollectionAddResponse } from './collection-inputs';
 
 @Resolver(CollectionItem)
 export class CollectionItemResolver {
@@ -135,6 +136,11 @@ export class CollectionItemResolver {
 		@UserId() userId: string
 	): Promise<CollectionItem> {
 		return this.service.create(data, userId);
+	}
+
+	@Mutation(() => CollectionAddResponse)
+	async addToCollection(@Args() { data }: CollectionAddInput, @UserId() userId: string) {
+		return this.service.addItems(data, userId);
 	}
 
 	@Mutation(() => [CollectionItem])

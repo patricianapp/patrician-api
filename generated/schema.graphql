@@ -55,6 +55,30 @@ input BaseWhereInput {
   deletedById_eq: String
 }
 
+input CollectionAddInputItem {
+  artist: String!
+  artistId: String!
+  customTitle: String!
+  customArtist: String!
+  dislikes: [String!]!
+  genres: [String!]!
+  likes: [String!]!
+  mbid: String!
+  plays: Float!
+  rating: String!
+  releaseDate: String!
+  review: String!
+  rymId: String!
+  spotifyId: String!
+  tags: [String!]!
+  title: String!
+}
+
+type CollectionAddResponse {
+  itemsAdded: [CollectionItem!]!
+  itemsUpdated: [CollectionItem!]!
+}
+
 type CollectionItem implements BaseGraphQLObject {
   id: ID!
   createdAt: DateTime!
@@ -319,6 +343,7 @@ scalar JSONObject
 
 type Mutation {
   createCollectionItem(data: CollectionItemCreateInput!): CollectionItem!
+  addToCollection(data: [CollectionAddInputItem!]!): CollectionAddResponse!
   createManyCollectionItems(data: [CollectionItemCreateInput!]!): [CollectionItem!]!
   updateCollectionItem(data: CollectionItemUpdateInput!, where: CollectionItemWhereUniqueInput!): CollectionItem!
   deleteCollectionItem(where: CollectionItemWhereUniqueInput!): StandardDeleteResponse!

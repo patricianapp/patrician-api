@@ -19,6 +19,7 @@ export interface Query {
 
 export interface Mutation {
     createCollectionItem: <T = CollectionItem>(args: { data: CollectionItemCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    addToCollection: <T = CollectionAddResponse>(args: { data: Array<CollectionAddInputItem> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyCollectionItems: <T = Array<CollectionItem>>(args: { data: Array<CollectionItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateCollectionItem: <T = CollectionItem>(args: { data: CollectionItemUpdateInput, where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteCollectionItem: <T = StandardDeleteResponse>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -154,6 +155,25 @@ export interface BaseWhereInput {
   deletedAt_gt?: String | null
   deletedAt_gte?: String | null
   deletedById_eq?: String | null
+}
+
+export interface CollectionAddInputItem {
+  artist: String
+  artistId: String
+  customTitle: String
+  customArtist: String
+  dislikes: Array<String>
+  genres: Array<String>
+  likes: Array<String>
+  mbid: String
+  plays: Float
+  rating: String
+  releaseDate: String
+  review: String
+  rymId: String
+  spotifyId: String
+  tags: Array<String>
+  title: String
 }
 
 export interface CollectionItemCreateInput {
@@ -479,6 +499,11 @@ export interface BaseModelUUID extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
+}
+
+export interface CollectionAddResponse {
+  itemsAdded: Array<CollectionItem>
+  itemsUpdated: Array<CollectionItem>
 }
 
 export interface CollectionItem extends BaseGraphQLObject {
