@@ -7,6 +7,7 @@ import * as schema from  './schema.graphql'
 
 export interface Query {
     collectionItems: <T = Array<CollectionItem>>(args: { offset?: Int | null, limit?: Int | null, where?: CollectionItemWhereInput | null, orderBy?: CollectionItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    collection: <T = Array<CollectionItem>>(args: { query?: String | null, user?: String | null, offset?: Int | null, limit?: Int | null, where?: CollectionItemWhereInput | null, orderBy?: CollectionItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     collectionItem: <T = CollectionItem>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     items: <T = Array<Item>>(args: { offset?: Int | null, limit?: Int | null, where?: ItemWhereInput | null, orderBy?: ItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     item: <T = Item>(args: { where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,

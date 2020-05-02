@@ -373,6 +373,7 @@ type PageInfo {
 
 type Query {
   collectionItems(offset: Int, limit: Int = 50, where: CollectionItemWhereInput, orderBy: CollectionItemOrderByInput): [CollectionItem!]!
+  collection(query: String, user: String, offset: Int, limit: Int = 50, where: CollectionItemWhereInput, orderBy: CollectionItemOrderByInput): [CollectionItem!]!
   collectionItem(where: CollectionItemWhereUniqueInput!): CollectionItem!
   items(offset: Int, limit: Int = 50, where: ItemWhereInput, orderBy: ItemOrderByInput): [Item!]!
   item(where: ItemWhereUniqueInput!): Item!

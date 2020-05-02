@@ -38,8 +38,37 @@ export class CollectionItemResolver {
 		@Args() { where, orderBy, limit, offset }: CollectionItemWhereArgs,
 		@Fields() fields: string[]
 	): Promise<CollectionItem[]> {
-		// TODO: Be able to use fields here without breaking artist/title fieldResolvers
-		return this.service.find<CollectionItemWhereInput>(where, orderBy, limit, offset);
+		fields = fields.filter((f) => f !== 'artist' && f !== 'title');
+		return this.service.find<CollectionItemWhereInput>(
+			where,
+			orderBy,
+			limit,
+			offset,
+			fields
+		);
+	}
+
+	@Query(() => [CollectionItem])
+	async collection(
+		@Args() { where, orderBy, limit, offset }: CollectionItemWhereArgs,
+		@Arg('user', { nullable: true }) userId: string,
+		@Arg('query', { nullable: true }) query: string,
+		@Fields() fields: string[]
+	): Promise<CollectionItem[]> {
+		fields = fields.filter((f) => f !== 'artist' && f !== 'title');
+		if (userId) {
+			where = {
+				...where,
+				userId_eq: userId,
+			};
+		}
+		return this.service.find<CollectionItemWhereInput>(
+			where,
+			orderBy,
+			limit,
+			offset,
+			fields
+		);
 	}
 
 	@Query(() => CollectionItem)
