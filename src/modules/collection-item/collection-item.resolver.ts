@@ -7,6 +7,7 @@ import {
 	FieldResolver,
 	Root,
 	Ctx,
+	Authorized,
 } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Fields, StandardDeleteResponse, UserId, BaseContext } from 'warthog';
@@ -48,20 +49,20 @@ export class CollectionItemResolver {
 		);
 	}
 
+	// This requires a user id to be passed in.
+	// To see the logged in user's collection, use the 'viewer' query
 	@Query(() => [CollectionItem])
 	async collection(
 		@Args() { where, orderBy, limit, offset }: CollectionItemWhereArgs,
-		@Arg('user', { nullable: true }) userId: string,
+		@Arg('user') userId: string,
 		@Arg('query', { nullable: true }) query: string,
 		@Fields() fields: string[]
 	): Promise<CollectionItem[]> {
 		fields = fields.filter((f) => f !== 'artist' && f !== 'title');
-		if (userId) {
-			where = {
-				...where,
-				userId_eq: userId,
-			};
-		}
+		where = {
+			...where,
+			userId_eq: userId,
+		};
 		return this.service.find<CollectionItemWhereInput>(
 			where,
 			orderBy,

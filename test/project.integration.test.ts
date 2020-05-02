@@ -74,6 +74,7 @@ describe('User', () => {
 	});
 
 	test("retrieve user's collection", async (done) => {
+		// TODO: Also test with 'collection' query
 		let response = await getUser(testData.user.username);
 		expect((response as User).id).toEqual(testData.user.username);
 

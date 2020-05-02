@@ -28,7 +28,7 @@ export class CollectionItemService extends BaseService<CollectionItem> {
 		// const userFields: Array<keyof CollectionAddInput> = ['rating', 'review', 'tags'];
 		const user = await this.userService.findOne({ id: userId });
 
-		// TODO: Duplicate checking
+		// TODO: Duplicate checking (multiple items match)
 
 		for (let item of items) {
 			const userItemData: any = {};
