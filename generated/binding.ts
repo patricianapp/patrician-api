@@ -22,7 +22,7 @@ export interface Mutation {
     addToCollection: <T = CollectionAddResponse>(args: { data: Array<CollectionAddInputItem> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyCollectionItems: <T = Array<CollectionItem>>(args: { data: Array<CollectionItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateCollectionItem: <T = CollectionItem>(args: { data: CollectionItemUpdateInput, where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteCollectionItem: <T = StandardDeleteResponse>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    removeFromCollection: <T = StandardDeleteResponse>(args: { itemId: String }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createItem: <T = Item>(args: { data: ItemCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyItems: <T = Array<Item>>(args: { data: Array<ItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateItem: <T = Item>(args: { data: ItemUpdateInput, where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -158,22 +158,22 @@ export interface BaseWhereInput {
 }
 
 export interface CollectionAddInputItem {
-  artist: String
-  artistId: String
-  customTitle: String
-  customArtist: String
-  dislikes: Array<String>
-  genres: Array<String>
-  likes: Array<String>
-  mbid: String
-  plays: Float
-  rating: String
-  releaseDate: String
-  review: String
-  rymId: String
-  spotifyId: String
-  tags: Array<String>
-  title: String
+  artist?: String | null
+  artistId?: String | null
+  customTitle?: String | null
+  customArtist?: String | null
+  dislikes?: String[] | String | null
+  genres?: String[] | String | null
+  likes?: String[] | String | null
+  mbid?: String | null
+  plays?: Float | null
+  rating?: String | null
+  releaseDate?: String | null
+  review?: String | null
+  rymId?: String | null
+  spotifyId?: String | null
+  tags?: String[] | String | null
+  title?: String | null
 }
 
 export interface CollectionItemCreateInput {

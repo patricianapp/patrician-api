@@ -42,4 +42,14 @@ export class ItemService extends BaseService<Item> {
 	async save(item: Item) {
 		this.repository.save(item);
 	}
+
+	async hardDelete(id: string): Promise<string> {
+		const item = await this.repository.findOne(id);
+		if (item) {
+			await this.repository.remove(item);
+			return Promise.resolve(`Item ${id} deleted.`);
+		} else {
+			return Promise.resolve('Item not found'); // TODO: Make this an error
+		}
+	}
 }

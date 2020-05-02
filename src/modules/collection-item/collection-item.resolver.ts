@@ -160,10 +160,10 @@ export class CollectionItemResolver {
 	}
 
 	@Mutation(() => StandardDeleteResponse)
-	async deleteCollectionItem(
-		@Arg('where') where: CollectionItemWhereUniqueInput,
+	async removeFromCollection(
+		@Arg('itemId') itemId: string,
 		@UserId() userId: string
 	): Promise<StandardDeleteResponse> {
-		return this.service.delete(where, userId);
+		return this.service.deleteCollectionItem(itemId, userId);
 	}
 }

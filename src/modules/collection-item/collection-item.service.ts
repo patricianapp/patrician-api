@@ -1,12 +1,11 @@
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
-import { BaseService } from 'warthog';
+import { BaseService, StandardDeleteResponse } from 'warthog';
 
 import { CollectionItem } from './collection-item.model';
 import { CollectionAddInputItem } from './collection-inputs';
 import { Item } from '../item/item.model';
-import { User } from '../user/user.model';
 import { ItemService } from '../item/item.service';
 import { ItemSearchIdInput } from '../item/item-inputs';
 import { UserService } from '../user/user.service';
@@ -99,5 +98,26 @@ export class CollectionItemService extends BaseService<CollectionItem> {
 			itemsAdded,
 			itemsUpdated,
 		};
+	}
+
+	async deleteCollectionItem(
+		itemId: string,
+		userId: string
+	): Promise<StandardDeleteResponse> {
+		// note: typeorm findOne does not filter deleted items,
+		// but we're using it because warthog's find() function throws
+		// 'column collectionitem.undefined does not exist'
+		const collectionItemToDelete = await this.repository.findOne({
+			where: {
+				user: { id: userId },
+				itemDetails: { id: itemId },
+			},
+		});
+
+		if (collectionItemToDelete && !collectionItemToDelete.deletedById) {
+			return this.delete(collectionItemToDelete.id, userId);
+		} else {
+			throw `Cannot find item ${itemId} in ${userId}'s collection`;
+		}
 	}
 }

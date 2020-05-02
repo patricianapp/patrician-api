@@ -56,22 +56,22 @@ input BaseWhereInput {
 }
 
 input CollectionAddInputItem {
-  artist: String!
-  artistId: String!
-  customTitle: String!
-  customArtist: String!
-  dislikes: [String!]!
-  genres: [String!]!
-  likes: [String!]!
-  mbid: String!
-  plays: Float!
-  rating: String!
-  releaseDate: String!
-  review: String!
-  rymId: String!
-  spotifyId: String!
-  tags: [String!]!
-  title: String!
+  artist: String
+  artistId: String
+  customTitle: String
+  customArtist: String
+  dislikes: [String!]
+  genres: [String!]
+  likes: [String!]
+  mbid: String
+  plays: Float
+  rating: String
+  releaseDate: String
+  review: String
+  rymId: String
+  spotifyId: String
+  tags: [String!]
+  title: String
 }
 
 type CollectionAddResponse {
@@ -346,7 +346,7 @@ type Mutation {
   addToCollection(data: [CollectionAddInputItem!]!): CollectionAddResponse!
   createManyCollectionItems(data: [CollectionItemCreateInput!]!): [CollectionItem!]!
   updateCollectionItem(data: CollectionItemUpdateInput!, where: CollectionItemWhereUniqueInput!): CollectionItem!
-  deleteCollectionItem(where: CollectionItemWhereUniqueInput!): StandardDeleteResponse!
+  removeFromCollection(itemId: String!): StandardDeleteResponse!
   createItem(data: ItemCreateInput!): Item!
   createManyItems(data: [ItemCreateInput!]!): [Item!]!
   updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item!

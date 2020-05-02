@@ -11,6 +11,7 @@ export class CollectionItem extends BaseModel {
 	@StringField({ nullable: true })
 	customArtist?: string;
 
+	// TODO: user and itemDetails should be primary keys
 	@ManyToOne(() => User, (user: User) => user.collection)
 	user!: User;
 
