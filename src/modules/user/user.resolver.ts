@@ -42,23 +42,35 @@ export class UserResolver {
 		return this.service.findOne<UserWhereUniqueInput>(where);
 	}
 
+	@Authorized('signedIn')
+	@Query(() => User)
+	async viewer(@Ctx() ctx: BaseContext): Promise<User> {
+		return this.service.findOne<UserWhereUniqueInput>({ id: ctx.user.id });
+	}
+
 	@FieldResolver(() => [CollectionItem])
 	collection(
 		@Root() user: User,
 		@Ctx() ctx: BaseContext,
-		@Arg('query') query: string
+		@Arg('query', { nullable: true }) query: string
 	): Promise<CollectionItem[]> {
 		query; // TODO: filter by search query
 		return ctx.dataLoader.loaders.User.collection.load(user);
 	}
 
-	@Authorized('signedIn')
 	@Mutation(() => User)
-	async createUser(
-		@Arg('data') data: UserCreateInput,
+	async createUser(@Arg('data') data: UserCreateInput): Promise<User> {
+		return this.service.create(data);
+	}
+
+	@Mutation(() => String)
+	async getAuthToken(
+		@Arg('username') username: string,
+		@Arg('password') password: string,
 		@UserId() userId: string
-	): Promise<User> {
-		return this.service.create(data, userId);
+	): Promise<string> {
+		// TODO: Create login payload type
+		return this.service.getAuthToken({ username, password });
 	}
 
 	@Mutation(() => [User])
@@ -69,6 +81,7 @@ export class UserResolver {
 		return this.service.createMany(data, userId);
 	}
 
+	@Authorized('signedIn')
 	@Mutation(() => User)
 	async updateUser(
 		@Args() { data, where }: UserUpdateArgs,

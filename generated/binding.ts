@@ -7,20 +7,23 @@ import * as schema from  './schema.graphql'
 
 export interface Query {
     collectionItems: <T = Array<CollectionItem>>(args: { offset?: Int | null, limit?: Int | null, where?: CollectionItemWhereInput | null, orderBy?: CollectionItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    collection: <T = Array<CollectionItem>>(args: { query?: String | null, user: String, offset?: Int | null, limit?: Int | null, where?: CollectionItemWhereInput | null, orderBy?: CollectionItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     collectionItem: <T = CollectionItem>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     items: <T = Array<Item>>(args: { offset?: Int | null, limit?: Int | null, where?: ItemWhereInput | null, orderBy?: ItemOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     item: <T = Item>(args: { where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     reviews: <T = Array<Review>>(args: { offset?: Int | null, limit?: Int | null, where?: ReviewWhereInput | null, orderBy?: ReviewOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     review: <T = Review>(args: { where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     users: <T = Array<User>>(args: { offset?: Int | null, limit?: Int | null, where?: UserWhereInput | null, orderBy?: UserOrderByInput | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    user: <T = User>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
+    user: <T = User>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    viewer: <T = User>(args?: {}, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
   }
 
 export interface Mutation {
     createCollectionItem: <T = CollectionItem>(args: { data: CollectionItemCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    addToCollection: <T = CollectionAddResponse>(args: { data: Array<CollectionAddInputItem> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyCollectionItems: <T = Array<CollectionItem>>(args: { data: Array<CollectionItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateCollectionItem: <T = CollectionItem>(args: { data: CollectionItemUpdateInput, where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteCollectionItem: <T = StandardDeleteResponse>(args: { where: CollectionItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    removeFromCollection: <T = StandardDeleteResponse>(args: { itemId: String }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createItem: <T = Item>(args: { data: ItemCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyItems: <T = Array<Item>>(args: { data: Array<ItemCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateItem: <T = Item>(args: { data: ItemUpdateInput, where: ItemWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -30,6 +33,7 @@ export interface Mutation {
     updateReview: <T = Review>(args: { data: ReviewUpdateInput, where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteReview: <T = StandardDeleteResponse>(args: { where: ReviewWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createUser: <T = User>(args: { data: UserCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
+    getAuthToken: <T = String>(args: { password: String, username: String }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     createManyUsers: <T = Array<User>>(args: { data: Array<UserCreateInput> }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     updateUser: <T = User>(args: { data: UserUpdateInput, where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
     deleteUser: <T = StandardDeleteResponse>(args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
@@ -152,6 +156,25 @@ export interface BaseWhereInput {
   deletedAt_gt?: String | null
   deletedAt_gte?: String | null
   deletedById_eq?: String | null
+}
+
+export interface CollectionAddInputItem {
+  artist?: String | null
+  artistId?: String | null
+  customTitle?: String | null
+  customArtist?: String | null
+  dislikes?: String[] | String | null
+  genres?: String[] | String | null
+  likes?: String[] | String | null
+  mbid?: String | null
+  plays?: Float | null
+  rating?: String | null
+  releaseDate?: String | null
+  review?: String | null
+  rymId?: String | null
+  spotifyId?: String | null
+  tags?: String[] | String | null
+  title?: String | null
 }
 
 export interface CollectionItemCreateInput {
@@ -477,6 +500,11 @@ export interface BaseModelUUID extends BaseGraphQLObject {
   deletedAt?: DateTime | null
   deletedById?: String | null
   version: Int
+}
+
+export interface CollectionAddResponse {
+  itemsAdded: Array<CollectionItem>
+  itemsUpdated: Array<CollectionItem>
 }
 
 export interface CollectionItem extends BaseGraphQLObject {

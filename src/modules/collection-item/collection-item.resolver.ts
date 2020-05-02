@@ -7,6 +7,7 @@ import {
 	FieldResolver,
 	Root,
 	Ctx,
+	Authorized,
 } from 'type-graphql';
 import { Inject } from 'typedi';
 import { Fields, StandardDeleteResponse, UserId, BaseContext } from 'warthog';
@@ -24,6 +25,7 @@ import { CollectionItem } from './collection-item.model';
 import { CollectionItemService } from './collection-item.service';
 import { User } from '../user/user.model';
 import { Item } from '../item/item.model';
+import { CollectionAddInput, CollectionAddResponse } from './collection-inputs';
 
 @Resolver(CollectionItem)
 export class CollectionItemResolver {
@@ -37,8 +39,37 @@ export class CollectionItemResolver {
 		@Args() { where, orderBy, limit, offset }: CollectionItemWhereArgs,
 		@Fields() fields: string[]
 	): Promise<CollectionItem[]> {
-		// TODO: Be able to use fields here without breaking artist/title fieldResolvers
-		return this.service.find<CollectionItemWhereInput>(where, orderBy, limit, offset);
+		fields = fields.filter((f) => f !== 'artist' && f !== 'title');
+		return this.service.find<CollectionItemWhereInput>(
+			where,
+			orderBy,
+			limit,
+			offset,
+			fields
+		);
+	}
+
+	// This requires a user id to be passed in.
+	// To see the logged in user's collection, use the 'viewer' query
+	@Query(() => [CollectionItem])
+	async collection(
+		@Args() { where, orderBy, limit, offset }: CollectionItemWhereArgs,
+		@Arg('user') userId: string,
+		@Arg('query', { nullable: true }) query: string,
+		@Fields() fields: string[]
+	): Promise<CollectionItem[]> {
+		fields = fields.filter((f) => f !== 'artist' && f !== 'title');
+		where = {
+			...where,
+			userId_eq: userId,
+		};
+		return this.service.find<CollectionItemWhereInput>(
+			where,
+			orderBy,
+			limit,
+			offset,
+			fields
+		);
 	}
 
 	@Query(() => CollectionItem)
@@ -137,6 +168,11 @@ export class CollectionItemResolver {
 		return this.service.create(data, userId);
 	}
 
+	@Mutation(() => CollectionAddResponse)
+	async addToCollection(@Args() { data }: CollectionAddInput, @UserId() userId: string) {
+		return this.service.addItems(data, userId);
+	}
+
 	@Mutation(() => [CollectionItem])
 	async createManyCollectionItems(
 		@Args() { data }: CollectionItemCreateManyArgs,
@@ -154,10 +190,10 @@ export class CollectionItemResolver {
 	}
 
 	@Mutation(() => StandardDeleteResponse)
-	async deleteCollectionItem(
-		@Arg('where') where: CollectionItemWhereUniqueInput,
+	async removeFromCollection(
+		@Arg('itemId') itemId: string,
 		@UserId() userId: string
 	): Promise<StandardDeleteResponse> {
-		return this.service.delete(where, userId);
+		return this.service.deleteCollectionItem(itemId, userId);
 	}
 }

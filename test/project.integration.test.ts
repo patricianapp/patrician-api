@@ -74,6 +74,7 @@ describe('User', () => {
 	});
 
 	test("retrieve user's collection", async (done) => {
+		// TODO: Also test with 'collection' query
 		let response = await getUser(testData.user.username);
 		expect((response as User).id).toEqual(testData.user.username);
 
@@ -113,6 +114,7 @@ interface GraphQLFixedError {
 	};
 }
 
+// TODO: Figure out how to add auth headers to these function calls
 async function signUpUser(data: UserCreateInput) {
 	let user: User;
 	try {
